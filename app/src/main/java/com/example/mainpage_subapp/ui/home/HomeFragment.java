@@ -46,10 +46,13 @@ public class HomeFragment extends Fragment {
                     MyData.nameArray[i],
                     MyData.versionArray[i],
                     MyData.id_[i],
-                    MyData.drawableArray[i]
+                    MyData.drawableArray[i],
+                    MyData.priceArray[i],
+                    MyData.timeLeft[i],
+                    MyData.billingArray[i],
+                    MyData.sharedArray[i]
             ));
         }
-
         removedItems = new ArrayList<Integer>();
 
         adapter = new CustomAdapter(data);
