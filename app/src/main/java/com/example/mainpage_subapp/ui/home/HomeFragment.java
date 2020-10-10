@@ -1,6 +1,7 @@
 package com.example.mainpage_subapp.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +67,8 @@ public class HomeFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            removeItem(v);
+            Intent intent=new Intent(context,SubscriptionDetails.class);
+            context.startActivity(intent);
         }
 
         private void removeItem(View v) {
