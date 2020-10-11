@@ -1,5 +1,7 @@
 package com.example.mainpage_subapp.ui.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -9,9 +11,13 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.mainpage_subapp.R;
@@ -66,8 +72,49 @@ public class SubscriptionDetails extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showCustomDialog();
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+    }
+    private void showCustomDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Get the layout inflater
+        LayoutInflater inflater = this.getLayoutInflater();
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
+        builder.setView(inflater.inflate(R.layout.add_members_dialog, null))
+                // Add action buttons
+                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // sign in the user ...
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        builder.setTitle("Add Member");
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        Switch sharetype= alertDialog.findViewById(R.id.sharetype);
+        final TextView sharelabel= alertDialog.findViewById(R.id.EnterAmt_control);
+        final EditText shareAmt= alertDialog.findViewById(R.id.shareAmt);
+        sharetype.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    shareAmt.setVisibility(View.VISIBLE);
+                    sharelabel.setVisibility(View.VISIBLE);
+                } else {
+                    // The toggle is disabled
+                    shareAmt.setVisibility(View.GONE);
+                    sharelabel.setVisibility(View.GONE);
+                }
             }
         });
     }
