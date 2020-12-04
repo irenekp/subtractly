@@ -2,6 +2,7 @@ package com.example.mainpage_subapp.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -16,7 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -68,18 +71,37 @@ public class SubscriptionDetails extends AppCompatActivity {
         CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         toolBarLayout.setTitle(SubscriptionType);
         //ADD USER Functionality
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_user);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_member);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showCustomDialog();
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                LinearLayout scr=findViewById(R.id.presentmembers);
+                LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
+                View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
+                scr.addView(inflatedLayout1);
             }
         });
+        LinearLayout scr=findViewById(R.id.presentmembers);
+        LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
+        View inflatedLayout = inflater.inflate(R.layout.member_entry, null, false);
+        scr.addView(inflatedLayout);
+
+        LayoutInflater inflater1 = LayoutInflater.from(SubscriptionDetails.this);
+        View inflatedLayout1 = inflater1.inflate(R.layout.member_entry, null, false);
+        scr.addView(inflatedLayout1);
+
+        LayoutInflater inflater2 = LayoutInflater.from(SubscriptionDetails.this);
+        View inflatedLayout2 = inflater2.inflate(R.layout.member_entry, null, false);
+        scr.addView(inflatedLayout2);
+
+        LayoutInflater inflater3 = LayoutInflater.from(SubscriptionDetails.this);
+        View inflatedLayout3 = inflater3.inflate(R.layout.member_entry, null, false);
+        scr.addView(inflatedLayout3);
+
     }
     @SuppressLint("ResourceAsColor")
-    private void showCustomDialog() {
+    public void showCustomDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater
         LayoutInflater inflater = this.getLayoutInflater();
@@ -120,3 +142,4 @@ public class SubscriptionDetails extends AppCompatActivity {
         });
     }
 }
+
