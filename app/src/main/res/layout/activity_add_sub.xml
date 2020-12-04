@@ -9,15 +9,16 @@
 
 
     <ScrollView
-        android:id="@+id/memberlist"
-        android:layout_width="409dp"
-        android:layout_height="289dp"
+
+        android:layout_width="410dp"
+        android:layout_height="357dp"
         android:layout_marginStart="1dp"
         android:layout_marginTop="298dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/memberlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
@@ -133,11 +134,21 @@
         android:id="@+id/addsubscription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="588dp"
+        android:layout_marginStart="172dp"
+        android:layout_marginTop="664dp"
         android:text="Add"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/addmember"
+        android:layout_width="53dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="356dp"
+        android:layout_marginTop="250dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_circle_outline_24" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
