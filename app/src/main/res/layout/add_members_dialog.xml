@@ -10,20 +10,22 @@
         android:layout_width="114dp"
         android:layout_height="47dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="26.5dp"
         android:text="Name:"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <!--android:visibility="gone"-->
 
     <TextView
         android:id="@+id/PickShare_control"
         android:layout_width="114dp"
         android:layout_height="47dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="74dp"
+        android:layout_marginTop="76dp"
         android:text="Share:"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,10 +34,11 @@
         android:layout_width="114dp"
         android:layout_height="47dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="124dp"
         android:text="Amount:"
-        android:textSize="24sp"
-        android:visibility="gone"
+        android:textSize="18sp"
+
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -43,10 +46,10 @@
         android:id="@+id/memberName"
         android:layout_width="252dp"
         android:layout_height="51dp"
-        android:layout_marginStart="94dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="11dp"
         android:ems="10"
-        android:hint="Name"
+        android:hint="Member Name"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -55,8 +58,8 @@
         android:id="@+id/sharetype"
         android:layout_width="53dp"
         android:layout_height="34dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="74dp"
         android:showText="false"
         android:textOff="Equal"
         android:textOn="Custom"
@@ -67,11 +70,12 @@
         android:id="@+id/shareAmt"
         android:layout_width="83dp"
         android:layout_height="41dp"
-        android:layout_marginStart="93dp"
-        android:layout_marginTop="111dp"
+        android:layout_marginStart="92dp"
+        android:layout_marginTop="118dp"
         android:ems="10"
+        android:hint="Ex: 1000"
         android:inputType="numberDecimal"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -79,8 +83,8 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="89dp"
-        android:layout_marginTop="81dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="80dp"
         android:text="Equal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -89,8 +93,8 @@
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="181dp"
-        android:layout_marginTop="81dp"
+        android:layout_marginStart="184dp"
+        android:layout_marginTop="80dp"
         android:text="Custom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

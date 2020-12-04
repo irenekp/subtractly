@@ -1,5 +1,6 @@
 package com.example.mainpage_subapp.ui.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -31,14 +32,13 @@ public class SubscriptionDetails extends AppCompatActivity {
         //SUB NAME
         String SubscriptionType="Netflix";
         //SUB IMAGE
-        ImageView image= (ImageView)findViewById(R.id.sub_logo);
-        image.setImageResource(R.drawable.netflix);
+
         //CATEGORY
         String category="Category: Entertainment";
         TextView tv_category=findViewById(R.id.category);
         tv_category.setText(category);
         //PLAN_PRICE
-        String plan_price="Family Plan|₹ 800";
+        String plan_price="Family Plan | ₹800";
         TextView tv_plan_price=findViewById(R.id.plan_price);
         tv_plan_price.setText(plan_price);
         //DUE DATE
@@ -78,6 +78,7 @@ public class SubscriptionDetails extends AppCompatActivity {
             }
         });
     }
+    @SuppressLint("ResourceAsColor")
     private void showCustomDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // Get the layout inflater

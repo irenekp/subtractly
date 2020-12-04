@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mainpage_subapp.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -58,6 +59,19 @@ public class HomeFragment extends Fragment {
         adapter = new CustomAdapter(data);
         recyclerView.setAdapter(adapter);
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        FloatingActionButton add=getView().findViewById(R.id.addactivity);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in =new Intent(getActivity(),addSubActivity.class);
+                getActivity().startActivity(in);
+            }
+        });
     }
 
     private static class MyOnClickListener implements View.OnClickListener {
