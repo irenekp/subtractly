@@ -44,5 +44,6 @@ dependencies {
     // resources
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
-
+    //OKHTTP
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 }
