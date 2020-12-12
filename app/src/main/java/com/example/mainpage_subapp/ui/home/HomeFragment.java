@@ -1,11 +1,16 @@
 package com.example.mainpage_subapp.ui.home;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,94 +23,131 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mainpage_subapp.R;
+import com.example.mainpage_subapp.roomdata.Subscription;
+import com.example.mainpage_subapp.roomdata.SubscriptionDatabase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
-    private static RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private static RecyclerView recyclerView;
-    private static ArrayList<DataModel> data;
-    static View.OnClickListener myOnClickListener;
-    private static ArrayList<Integer> removedItems;
+
+    private LinearLayout homeView;
+    private ProgressDialog p;
+
+    private List<Subscription> dataSet;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        myOnClickListener = new MyOnClickListener(getActivity());
+        homeView = root.findViewById(R.id.home_view);
 
-        recyclerView = (RecyclerView) root.findViewById(R.id.my_recycler_view);
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        data = new ArrayList<DataModel>();
-        for (int i = 0; i < MyData.nameArray.length; i++) {
-            data.add(new DataModel(
-                    MyData.nameArray[i],
-                    MyData.versionArray[i],
-                    MyData.id_[i],
-                    MyData.drawableArray[i],
-                    MyData.priceArray[i],
-                    MyData.timeLeft[i],
-                    MyData.billingArray[i],
-                    MyData.sharedArray[i]
-            ));
-        }
-        removedItems = new ArrayList<Integer>();
-
-        adapter = new CustomAdapter(data);
-        recyclerView.setAdapter(adapter);
         return root;
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        FloatingActionButton add=getView().findViewById(R.id.addactivity);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent in =new Intent(getActivity(),addSubActivity.class);
-                getActivity().startActivity(in);
-            }
-        });
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+            AsyncGetSubs data = new AsyncGetSubs();
+            data.execute();
+        }
     }
 
-    private static class MyOnClickListener implements View.OnClickListener {
+    public class AsyncGetSubs extends AsyncTask<Void, View, Void> {
 
-        private final Context context;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            p = new ProgressDialog(getActivity());
+            p.setMessage("Getting subscriptions!");
+            p.setIndeterminate(false);
+            p.setCancelable(false);
+            p.show();
+        }
 
-        private MyOnClickListener(Context context) {
-            this.context = context;
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+
+            //init layout inflater and use cv to find all our views
+
+
+            //appending data from dataset into the various textviews/imageviews;
+            SubscriptionDatabase subDb = SubscriptionDatabase.getInstance(getActivity());
+            dataSet = subDb.subscriptionDao().getAllSubscriptions();
+
+            for (int i = 0; i < dataSet.size(); i++) {
+
+
+                LayoutInflater li = LayoutInflater.from(getContext());
+                View cv = li.inflate(R.layout.cards_layout, null);
+
+                TextView name, shared, price, cycle, plan;
+                ImageView icon;
+
+                //creating a string array of data to pass to the next intent
+                String sname, sshared, sprice, scycle, splan, sicon;
+                sname = dataSet.get(i).getName();
+                sshared = "Shared by " + dataSet.get(i).getShared();
+                sprice = "₹" + dataSet.get(i).getPrice();
+                scycle = dataSet.get(i).getBilling_cycle() + " day billing cycle";
+                splan = dataSet.get(i).getPlan() + " plan";
+                sicon = ""+dataSet.get(i).getIcon();
+
+                final String[] subArr = {sname, sshared, sprice, scycle, splan, sicon};
+
+                name = (TextView) cv.findViewById(R.id.textViewName);
+                name.setText(sname);
+
+                shared = (TextView) cv.findViewById(R.id.textShared);
+                shared.setText(sshared);
+
+                price = (TextView) cv.findViewById(R.id.textPrice);
+                price.setText(sprice);
+
+                cycle = (TextView) cv.findViewById(R.id.textBilling);
+                cycle.setText(scycle);
+
+                plan = (TextView) cv.findViewById(R.id.textPlan);
+                plan.setText(splan);
+
+                icon = (ImageView) cv.findViewById(R.id.imgicon);
+                icon.setImageResource(Integer.parseInt(sicon));
+
+
+                cv.setOnClickListener(new View.OnClickListener(){
+
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(getActivity(), SubscriptionDetails.class);
+                        intent.putExtra("subArr", subArr);
+                        startActivity(intent);
+                    }
+                });
+
+                publishProgress(cv);
+
+            }
+
+            return null;
         }
 
         @Override
-        public void onClick(View v) {
-            Intent intent=new Intent(context,SubscriptionDetails.class);
-            context.startActivity(intent);
+        protected void onProgressUpdate(View... v) {
+            p.dismiss();
+            homeView.addView(v[0]);
         }
 
-        private void removeItem(View v) {
-            int selectedItemPosition = recyclerView.getChildPosition(v);
-            RecyclerView.ViewHolder viewHolder
-                    = recyclerView.findViewHolderForPosition(selectedItemPosition);
-            TextView textViewName
-                    = (TextView) viewHolder.itemView.findViewById(R.id.textViewName);
-            String selectedName = (String) textViewName.getText();
-            int selectedItemId = -1;
-            for (int i = 0; i < MyData.nameArray.length; i++) {
-                if (selectedName.equals(MyData.nameArray[i])) {
-                    selectedItemId = MyData.id_[i];
-                }
-            }
-            removedItems.add(selectedItemId);
-            data.remove(selectedItemPosition);
-            adapter.notifyItemRemoved(selectedItemPosition);
-        }
+
     }
-
-
 }

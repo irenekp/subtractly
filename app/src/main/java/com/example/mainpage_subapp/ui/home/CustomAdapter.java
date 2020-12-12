@@ -1,5 +1,5 @@
 package com.example.mainpage_subapp.ui.home;
-
+/*
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -89,4 +89,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         return dataSet.size();
     }
 }
+
+ */
 

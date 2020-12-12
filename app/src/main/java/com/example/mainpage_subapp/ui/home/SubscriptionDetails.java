@@ -32,16 +32,17 @@ public class SubscriptionDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscription_details);
-        //SUB NAME
-        String SubscriptionType="Netflix";
-        //SUB IMAGE
 
+        String[] subArr = getIntent().getStringArrayExtra("subArr");
+
+        //SUB NAME
+        String SubscriptionType=subArr[0];
         //CATEGORY
-        String category="Category: Entertainment";
+        String category=subArr[4];
         TextView tv_category=findViewById(R.id.category);
         tv_category.setText(category);
         //PLAN_PRICE
-        String plan_price="Family Plan | ₹800";
+        String plan_price=subArr[2];
         TextView tv_plan_price=findViewById(R.id.plan_price);
         tv_plan_price.setText(plan_price);
         //DUE DATE
@@ -49,7 +50,7 @@ public class SubscriptionDetails extends AppCompatActivity {
         TextView tv_duedate=findViewById(R.id.duedate);
         tv_duedate.setText(duedate);
         //BILLING CYCLE
-        String billingcycle="90 day billing cycle";
+        String billingcycle=subArr[3];
         TextView tv_billingcycle=findViewById(R.id.billingcycle);
         tv_billingcycle.setText(billingcycle);
         //Progress Bar
@@ -63,7 +64,7 @@ public class SubscriptionDetails extends AppCompatActivity {
         TextView tv_daysleft=findViewById(R.id.daysleft);
         tv_daysleft.setText(daysleft);
         //NO OF MEMBERS
-        String noofmembers="4/5";
+        String noofmembers=subArr[1];
         TextView tv_noofmembers=findViewById(R.id.noofmembers);
         tv_noofmembers.setText(noofmembers);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

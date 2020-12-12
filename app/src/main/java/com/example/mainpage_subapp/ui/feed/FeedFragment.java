@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mainpage_subapp.R;
-import com.example.mainpage_subapp.ui.home.CustomAdapter;
 import com.example.mainpage_subapp.ui.home.DataModel;
 import com.example.mainpage_subapp.ui.home.HomeFragment;
 import com.example.mainpage_subapp.ui.home.MyData;
