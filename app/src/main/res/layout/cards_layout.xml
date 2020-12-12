@@ -9,9 +9,9 @@
     android:tag="cards main container">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_view"
+        android:id="@+id/card_subs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         card_view:cardCornerRadius="10dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true">
@@ -21,18 +21,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textTimeleft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="144dp"
-                android:layout_marginTop="100dp"
-                android:text="19 days remaining"
-                android:textColor="#4CAF50"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textViewVersion"
+                android:id="@+id/textPlan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -69,7 +58,7 @@
                 card_view:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imgicon"
                 android:layout_width="101dp"
                 android:layout_height="108dp"
                 android:layout_marginStart="24dp"
@@ -98,6 +87,17 @@
                 android:fontFamily="sans-serif-black"
                 android:text="₹899"
                 android:textSize="16sp"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textDaysLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="144dp"
+                android:layout_marginTop="96dp"
+                android:text="19 days remaining"
+                android:textColor="@android:color/holo_green_dark"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
