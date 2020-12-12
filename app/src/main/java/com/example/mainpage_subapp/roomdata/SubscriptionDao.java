@@ -27,8 +27,12 @@ public interface SubscriptionDao {
     @Delete
     void Delete(Subscription subscription);
 
+    @Insert
+    void insertGroup(SubscriptionGroup subscriptionGroup);
+
     //for any and all customised operations - you use a @Query tag and add your query, like so:
     @Query("SELECT * FROM subscriptions")
     List<Subscription> getAllSubscriptions();
+
 
 }
