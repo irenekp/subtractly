@@ -46,4 +46,6 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     //OKHTTP
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+    //analytics
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
