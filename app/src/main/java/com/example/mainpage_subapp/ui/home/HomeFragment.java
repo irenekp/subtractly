@@ -1,5 +1,7 @@
 package com.example.mainpage_subapp.ui.home;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -54,6 +56,14 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        FloatingActionButton add=getView().findViewById(R.id.addActivity);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in =new Intent(getActivity(),addSubActivity.class);
+                getActivity().startActivity(in);
+            }
+        });
         if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
