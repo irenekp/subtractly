@@ -17,4 +17,7 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 -->
+    <style name="dateStyle">
+        <item name="android:textColor">#D3D3D3</item>
+    </style>
 </resources>
