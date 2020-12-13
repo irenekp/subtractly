@@ -79,7 +79,7 @@ public class FeedFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             p = new ProgressDialog(getActivity());
-            p.setMessage("Please wait...It is downloading");
+            p.setMessage("Customizing your feed!");
             p.setIndeterminate(false);
             p.setCancelable(false);
             p.show();
@@ -126,13 +126,14 @@ public class FeedFragment extends Fragment {
                         String Source=src.getString("name");
                         String Title=object.getString("title");
                         String Key=topics[i];
-                        String Date=object.getString("publishedAt");
+                        String Date=object.getString("publishedAt").substring(0,10);
                         String Content=object.getString("description");
                         URL imgurl = new URL(object.getString("urlToImage"));
                         Bitmap bmp = BitmapFactory.decodeStream(imgurl.openConnection().getInputStream());
                         LayoutInflater li = LayoutInflater.from(getContext());
                         View cv = li.inflate(R.layout.feed_entry, null);
                         TextView tv=cv.findViewById(R.id.articleTitle);
+                        Title = Title.substring(0, 40)+"...";
                         tv.setText(Title);
                         tv=cv.findViewById(R.id.topic);
                         tv.setText(Key);

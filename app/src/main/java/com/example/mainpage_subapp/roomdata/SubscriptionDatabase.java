@@ -62,19 +62,13 @@ public abstract class SubscriptionDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            Subscription netflixFamily;
-            Subscription spotifyDuo;
-            Subscription primevideoFamily;
-            Subscription netflixSingle;
-            Subscription spotifyFamily;
 
-            SubscriptionDao.insert(netflixFamily = new Subscription("Netflix", "Family", 899, 4, 30, R.drawable.netflix));
-            SubscriptionDao.insert(spotifyDuo = new Subscription("Spotify", "Duo", 129, 2, 30, R.drawable.spotify));
-            SubscriptionDao.insert(primevideoFamily = new Subscription("PrimeVideo", "Family", 999, 4, 30, R.drawable.primevideo));
-            SubscriptionDao.insert(netflixSingle = new Subscription("Netflix", "Individual", 129, 1, 30, R.drawable.netflix));
-            SubscriptionDao.insert(spotifyFamily = new Subscription("Spotify", "Family", 199, 4, 30, R.drawable.spotify));
 
-            SubscriptionDao.insertGroup(new SubscriptionGroup(netflixFamily.getId(), "201230"));
+            SubscriptionDao.insert(new Subscription("Netflix", "Family", 899, 4, 30, R.drawable.netflix));
+            SubscriptionDao.insert(new Subscription("Spotify", "Duo", 129, 2, 30, R.drawable.spotify));
+            SubscriptionDao.insert(new Subscription("PrimeVideo", "Family", 999, 4, 30, R.drawable.primevideo));
+            SubscriptionDao.insert(new Subscription("Netflix", "Individual", 129, 1, 30, R.drawable.netflix));
+            SubscriptionDao.insert(new Subscription("Spotify", "Family", 199, 4, 30, R.drawable.spotify));
 
             return null;
         }

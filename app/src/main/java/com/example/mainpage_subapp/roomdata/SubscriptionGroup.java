@@ -15,7 +15,7 @@ public class SubscriptionGroup {
     private int group_id;
 
 
-    @ColumnInfo(name = "id")
+    @ColumnInfo(name = "id", index = true)
     private int id;
 
     @ColumnInfo(name = "start_date")

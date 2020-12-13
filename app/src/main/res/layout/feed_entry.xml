@@ -22,15 +22,15 @@
 
             <TextView
                 android:id="@+id/topic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="138dp"
+                android:layout_height="15dp"
                 android:layout_gravity="center_horizontal"
 
-                android:layout_marginStart="104dp"
-                android:layout_marginTop="36dp"
+                android:layout_marginStart="108dp"
+                android:layout_marginTop="40dp"
                 android:text="Prime Video and Netflix"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -38,31 +38,36 @@
                 android:id="@+id/newsContent"
                 android:layout_width="260dp"
                 android:layout_height="61dp"
-                android:layout_marginStart="104dp"
-                android:layout_marginTop="80dp"
+                android:layout_marginStart="108dp"
+                android:layout_marginTop="76dp"
+                android:fontFamily="sans-serif-condensed-light"
                 android:text="content"
-                android:textSize="10sp"
+                android:textAlignment="viewStart"
+                android:textSize="12sp"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/articleImage"
-                android:layout_width="101dp"
-                android:layout_height="108dp"
+                android:layout_width="98dp"
+                android:layout_height="95dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="36dp"
+                android:scaleType="centerCrop"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent"
                 card_view:srcCompat="@drawable/netflix" />
 
             <TextView
-                android:id="@+id/articleTitle"
+                android:id="@+id/source"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
-                android:text="Title"
-                android:textSize="20sp"
+                android:layout_marginStart="108dp"
+                android:layout_marginTop="56dp"
+                android:layout_weight="1"
+                android:text="Source Source Source"
+                android:textColor="#1C37CF"
+                android:textSize="12sp"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -75,20 +80,35 @@
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/source"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Source Source Source" />
-
-                <TextView
-                    android:id="@+id/articleDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2020-20-20" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/articleDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="284dp"
+                android:layout_marginTop="56dp"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-light"
+                android:text="2020-20-20"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/articleTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Title"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="#040303"
+                android:textSize="20sp"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

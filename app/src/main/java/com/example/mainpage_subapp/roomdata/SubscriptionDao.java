@@ -34,5 +34,4 @@ public interface SubscriptionDao {
     @Query("SELECT * FROM subscriptions")
     List<Subscription> getAllSubscriptions();
 
-
 }

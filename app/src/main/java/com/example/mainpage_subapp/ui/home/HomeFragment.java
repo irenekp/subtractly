@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mainpage_subapp.R;
 import com.example.mainpage_subapp.roomdata.Subscription;
 import com.example.mainpage_subapp.roomdata.SubscriptionDatabase;
+import com.example.mainpage_subapp.roomdata.SubscriptionGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.w3c.dom.Text;
@@ -38,6 +39,7 @@ public class HomeFragment extends Fragment {
     private ProgressDialog p;
 
     private List<Subscription> dataSet;
+    private List<SubscriptionGroup> trial;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class HomeFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             p = new ProgressDialog(getActivity());
-            p.setMessage("Getting subscriptions!");
+            p.setMessage("Getting subscriptions");
             p.setIndeterminate(false);
             p.setCancelable(false);
             p.show();
@@ -85,6 +87,7 @@ public class HomeFragment extends Fragment {
             //appending data from dataset into the various textviews/imageviews;
             SubscriptionDatabase subDb = SubscriptionDatabase.getInstance(getActivity());
             dataSet = subDb.subscriptionDao().getAllSubscriptions();
+
 
             for (int i = 0; i < dataSet.size(); i++) {
 
