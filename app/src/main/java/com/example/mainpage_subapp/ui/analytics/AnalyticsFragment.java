@@ -103,16 +103,16 @@ public class AnalyticsFragment extends Fragment {
         LineData lineData = new LineData(dataSet);
         XAxis xAxis = chart.getXAxis();
         /**xAxis.setValueFormatter(new IAxisValueFormatter(){
-            public String getFormattedValue(float value, AxisBase axis) {
-            if (value >= 0) {
-            if (value <= Months.size() - 1) {
-            return Months.get((int) value);
-            }
-            return "";
-            }
-            return "";
-            }
-        });**/
+         public String getFormattedValue(float value, AxisBase axis) {
+         if (value >= 0) {
+         if (value <= Months.size() - 1) {
+         return Months.get((int) value);
+         }
+         return "";
+         }
+         return "";
+         }
+         });**/
         String [] months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"};
         xAxis.setValueFormatter(new IndexAxisValueFormatter(months));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);

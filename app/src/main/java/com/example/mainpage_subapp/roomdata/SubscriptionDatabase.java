@@ -1,6 +1,8 @@
 package com.example.mainpage_subapp.roomdata;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
@@ -13,7 +15,9 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.example.mainpage_subapp.R;
 import com.example.mainpage_subapp.ui.home.SubscriptionDetails;
 
+import java.net.URL;
 import java.util.Date;
+
 
 
 @Database(entities = {Subscription.class, SubscriptionGroup.class}, version = 1)
@@ -63,10 +67,9 @@ public abstract class SubscriptionDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
 
-
             SubscriptionDao.insert(new Subscription("Netflix", "Family", 899, 4, 30, R.drawable.netflix));
-            SubscriptionDao.insert(new Subscription("Spotify", "Duo", 129, 2, 30, R.drawable.spotify));
-            SubscriptionDao.insert(new Subscription("PrimeVideo", "Family", 999, 4, 30, R.drawable.primevideo));
+            SubscriptionDao.insert(new Subscription("Spotify", "Duo", 399, 2, 90, R.drawable.spotify));
+            SubscriptionDao.insert(new Subscription("PrimeVideo", "Family", 999, 4, 365, R.drawable.primevideo));
             SubscriptionDao.insert(new Subscription("Netflix", "Individual", 129, 1, 30, R.drawable.netflix));
             SubscriptionDao.insert(new Subscription("Spotify", "Family", 199, 4, 30, R.drawable.spotify));
 

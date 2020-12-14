@@ -3,7 +3,6 @@ package com.example.mainpage_subapp.ui.home;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,11 +17,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mainpage_subapp.R;
 import com.example.mainpage_subapp.roomdata.Subscription;
@@ -30,9 +24,6 @@ import com.example.mainpage_subapp.roomdata.SubscriptionDatabase;
 import com.example.mainpage_subapp.roomdata.SubscriptionGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -91,7 +82,6 @@ public class HomeFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
 
 
-            //init layout inflater and use cv to find all our views
 
 
             //appending data from dataset into the various textviews/imageviews;
@@ -101,7 +91,7 @@ public class HomeFragment extends Fragment {
 
             for (int i = 0; i < dataSet.size(); i++) {
 
-
+                //init layout inflater and use cv to find all our views
                 LayoutInflater li = LayoutInflater.from(getContext());
                 View cv = li.inflate(R.layout.cards_layout, null);
 
