@@ -53,6 +53,9 @@ public class SubscriptionDetails extends AppCompatActivity {
         String billingcycle=subArr[3];
         TextView tv_billingcycle=findViewById(R.id.billingcycle);
         tv_billingcycle.setText(billingcycle);
+        //LOGO
+        ImageView sublogo = (ImageView)findViewById(R.id.detailsLogo);
+        sublogo.setImageResource(Integer.parseInt(subArr[5]));
         //Progress Bar
         int max=90;
         int progress=60;

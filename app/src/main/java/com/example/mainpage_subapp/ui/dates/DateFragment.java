@@ -34,8 +34,6 @@ public class DateFragment extends Fragment {
         calendar.set(2020, Calendar.DECEMBER, 14);
         //if multiple
         Drawable[] x = new Drawable[]{getResources().getDrawable(R.drawable.netflix), getResources().getDrawable(R.drawable.primevideo)};
-        LayerDrawable y = new LayerDrawable(x);
-        events.add(new EventDay(calendar, y));
         Calendar calendar2 = Calendar.getInstance();
         calendar2.set(2020, Calendar.DECEMBER, 17);
         events.add(new EventDay(calendar2, R.drawable.primevideo));
