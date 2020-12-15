@@ -66,8 +66,9 @@
                 android:layout_marginTop="56dp"
                 android:layout_weight="1"
                 android:text="Source Source Source"
-                android:textColor="#1C37CF"
+                android:textColor="@color/colorPrimary"
                 android:textSize="12sp"
+                android:textStyle="bold"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -105,8 +106,9 @@
                 android:fontFamily="sans-serif-condensed"
                 android:text="Title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                android:textColor="#040303"
+                android:textColor="#F6F5F5"
                 android:textSize="20sp"
+                android:textStyle="bold"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 

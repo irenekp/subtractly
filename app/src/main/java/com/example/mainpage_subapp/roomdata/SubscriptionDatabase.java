@@ -20,7 +20,7 @@ import java.util.Date;
 
 
 
-@Database(entities = {Subscription.class, SubscriptionGroup.class}, version = 2)
+@Database(entities = {Subscription.class, SubscriptionGroup.class}, version = 3)
 public abstract class SubscriptionDatabase extends RoomDatabase {
 
     private static SubscriptionDatabase instance;
@@ -52,17 +52,17 @@ public abstract class SubscriptionDatabase extends RoomDatabase {
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
         private SubscriptionDao SubscriptionDao;
         private PopulateDbAsyncTask(SubscriptionDatabase db) {
-            SubscriptionDao = db.subscriptionDao();
+             SubscriptionDao= db.subscriptionDao();
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
 
-            SubscriptionDao.insert(new Subscription("Netflix", "Family", 899, 4, 30, R.drawable.netflix));
-            SubscriptionDao.insert(new Subscription("Spotify", "Duo", 399, 2, 90, R.drawable.spotify));
-            SubscriptionDao.insert(new Subscription("PrimeVideo", "Family", 999, 4, 365, R.drawable.primevideo));
-            SubscriptionDao.insert(new Subscription("Netflix", "Individual", 129, 1, 30, R.drawable.netflix));
-            SubscriptionDao.insert(new Subscription("Spotify", "Family", 199, 4, 30, R.drawable.spotify));
+            SubscriptionDao.insert(new Subscription("Netflix", "Family", 899, 4, 30, R.drawable.netflix, "14/12/2020"));
+            SubscriptionDao.insert(new Subscription("Spotify", "Duo", 399, 2, 90, R.drawable.spotify, "06/11/2020"));
+            SubscriptionDao.insert(new Subscription("PrimeVideo", "Family", 999, 4, 365, R.drawable.primevideo, "25/06/2020"));
+            SubscriptionDao.insert(new Subscription("Netflix", "Individual", 129, 1, 30, R.drawable.netflix, "17/12/2020"));
+            SubscriptionDao.insert(new Subscription("Spotify", "Family", 199, 4, 30, R.drawable.spotify, "7/12/2020"));
 
             return null;
         }

@@ -52,9 +52,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="104dp"
-                android:fontFamily="sans-serif-black"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:text="Due: 09/10/2020"
-                android:textColor="#21581D"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,8 +75,8 @@
                 android:id="@+id/daysleft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="292dp"
-                android:layout_marginTop="80dp"
+                android:layout_marginStart="312dp"
+                android:layout_marginTop="48dp"
                 android:fontFamily="sans-serif-light"
                 android:text="28"
                 android:textSize="20sp"
@@ -86,23 +88,12 @@
                 android:id="@+id/daysleft_control"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="292dp"
-                android:layout_marginTop="108dp"
+                android:layout_marginStart="296dp"
+                android:layout_marginTop="72dp"
                 android:fontFamily="sans-serif-light"
                 android:text="days left"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/daysCycle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="/60"
-                android:textSize="20sp"
-                android:textStyle="italic"
-                tools:layout_editor_absoluteX="315dp"
-                tools:layout_editor_absoluteY="80dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -134,10 +125,11 @@
                 android:id="@+id/noofmembers"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="356dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="348dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-black"
-                android:text="4/5"
+                android:text="4"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -145,8 +137,8 @@
                 android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="332dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="324dp"
+                android:layout_marginTop="12dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 card_view:srcCompat="@drawable/ic_baseline_group_24" />

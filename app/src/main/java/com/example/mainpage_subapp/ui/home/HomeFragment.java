@@ -24,12 +24,21 @@ import com.example.mainpage_subapp.roomdata.SubscriptionDatabase;
 import com.example.mainpage_subapp.roomdata.SubscriptionGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class HomeFragment extends Fragment {
 
     private LinearLayout homeView;
-    private ProgressDialog p;
 
     private List<Subscription> dataSet;
     private List<SubscriptionGroup> trial;
@@ -66,18 +75,9 @@ public class HomeFragment extends Fragment {
     }
 
     public class AsyncGetSubs extends AsyncTask<Void, View, Void> {
-/**
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //p = new ProgressDialog(getActivity());
-            //p.setMessage("Getting subscriptions");
-            p.setIndeterminate(false);
-            p.setCancelable(false);
-            p.show();
-        }
 
-**/
+
+
         @Override
         protected Void doInBackground(Void... voids) {
 
@@ -95,31 +95,56 @@ public class HomeFragment extends Fragment {
                 LayoutInflater li = LayoutInflater.from(getContext());
                 View cv = li.inflate(R.layout.cards_layout, null);
 
-                TextView name, shared, price, cycle, plan;
+
+
+                TextView name, shared, price, cycle, plan, daysLeft;
                 ImageView icon;
 
                 //creating a string array of data to pass to the next intent
-                String sname, sshared, sprice, scycle, splan, sicon;
+                String sname, sshared, sprice, scycle, splan, sicon, sdaysleft;
                 sname = dataSet.get(i).getName();
-                sshared = "Shared by " + dataSet.get(i).getShared();
+                sshared = "" + dataSet.get(i).getShared();
                 sprice = "₹" + dataSet.get(i).getPrice();
-                scycle = dataSet.get(i).getBilling_cycle() + " day billing cycle";
+                scycle = dataSet.get(i).getBilling_cycle()+"";
                 splan = dataSet.get(i).getPlan() + " plan";
-                sicon = ""+dataSet.get(i).getIcon();
+                sicon = "" + dataSet.get(i).getIcon();
 
-                final String[] subArr = {sname, sshared, sprice, scycle, splan, sicon};
+                //DATE LOGIC///////////////////////
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Calendar c = Calendar.getInstance();
+                Calendar today = Calendar.getInstance();
+                today.set(Calendar.HOUR_OF_DAY, 0);
+                String startDate = dataSet.get(i).getStart_date();
+                try{
+                    //Setting the date to the given date
+                    c.setTime(sdf.parse(startDate));
+                }catch(ParseException e){
+                    e.printStackTrace();
+                }
+                c.add(Calendar.DAY_OF_MONTH, dataSet.get(i).getBilling_cycle());
+                String endDate = sdf.format(c.getTime());
+
+                Date d1 = today.getTime();
+                Date d2 = c.getTime();
+                long diff = d2.getTime() - d1.getTime();
+                int days = (int) (diff / (1000*60*60*24));
+
+                sdaysleft = ""+days;
+                /////////////////////////////
+
+                final String[] subArr = {sname, sshared, sprice, scycle, splan, sicon, sdaysleft, startDate};
 
                 name = (TextView) cv.findViewById(R.id.textViewName);
                 name.setText(sname);
 
                 shared = (TextView) cv.findViewById(R.id.textShared);
-                shared.setText(sshared);
+                shared.setText("Shared by " + sshared);
 
                 price = (TextView) cv.findViewById(R.id.textPrice);
                 price.setText(sprice);
 
                 cycle = (TextView) cv.findViewById(R.id.textBilling);
-                cycle.setText(scycle);
+                cycle.setText(scycle+ " day billing cycle");
 
                 plan = (TextView) cv.findViewById(R.id.textPlan);
                 plan.setText(splan);
@@ -127,8 +152,11 @@ public class HomeFragment extends Fragment {
                 icon = (ImageView) cv.findViewById(R.id.imgicon);
                 icon.setImageResource(Integer.parseInt(sicon));
 
+                daysLeft = (TextView) cv.findViewById(R.id.textDaysLeft);
+                daysLeft.setText(sdaysleft+ " days left");
 
-                cv.setOnClickListener(new View.OnClickListener(){
+
+                cv.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View view) {
@@ -147,7 +175,6 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected void onProgressUpdate(View... v) {
-   //         p.dismiss();
             homeView.addView(v[0]);
         }
 

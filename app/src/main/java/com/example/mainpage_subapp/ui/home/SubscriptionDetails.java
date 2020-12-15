@@ -26,6 +26,10 @@ import android.widget.TextView;
 
 import com.example.mainpage_subapp.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class SubscriptionDetails extends AppCompatActivity {
 
     @Override
@@ -46,18 +50,30 @@ public class SubscriptionDetails extends AppCompatActivity {
         TextView tv_plan_price=findViewById(R.id.plan_price);
         tv_plan_price.setText(plan_price);
         //DUE DATE
-        String duedate="Due:09/10/2020";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Calendar c = Calendar.getInstance();
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        String startDate = subArr[7];
+        try{
+            //Setting the date to the given date
+            c.setTime(sdf.parse(startDate));
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        c.add(Calendar.DAY_OF_MONTH, Integer.parseInt(subArr[3]));
+        String endDate = sdf.format(c.getTime());
         TextView tv_duedate=findViewById(R.id.duedate);
-        tv_duedate.setText(duedate);
+        tv_duedate.setText("Due: " + endDate);
         //BILLING CYCLE
         String billingcycle=subArr[3];
         TextView tv_billingcycle=findViewById(R.id.billingcycle);
-        tv_billingcycle.setText(billingcycle);
+        tv_billingcycle.setText("" + subArr[3]+ " day billing cycle");
         //LOGO
         ImageView sublogo = (ImageView)findViewById(R.id.detailsLogo);
         sublogo.setImageResource(Integer.parseInt(subArr[5]));
          //DAYS LEFT
-        String daysleft="";
+        String daysleft=""+subArr[6];
         TextView tv_daysleft=findViewById(R.id.daysleft);
         tv_daysleft.setText(daysleft);
         //NO OF MEMBERS
@@ -80,22 +96,14 @@ public class SubscriptionDetails extends AppCompatActivity {
                 scr.addView(inflatedLayout1);
             }
         });
-        LinearLayout scr=findViewById(R.id.presentmembers);
-        LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
-        View inflatedLayout = inflater.inflate(R.layout.member_entry, null, false);
-        scr.addView(inflatedLayout);
 
-        LayoutInflater inflater1 = LayoutInflater.from(SubscriptionDetails.this);
-        View inflatedLayout1 = inflater1.inflate(R.layout.member_entry, null, false);
-        scr.addView(inflatedLayout1);
+        for(int i = 0; i<Integer.parseInt(subArr[1]); i++) {
+            LinearLayout scr = findViewById(R.id.presentmembers);
+            LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
+            View inflatedLayout = inflater.inflate(R.layout.member_entry, null, false);
+            scr.addView(inflatedLayout);
 
-        LayoutInflater inflater2 = LayoutInflater.from(SubscriptionDetails.this);
-        View inflatedLayout2 = inflater2.inflate(R.layout.member_entry, null, false);
-        scr.addView(inflatedLayout2);
-
-        LayoutInflater inflater3 = LayoutInflater.from(SubscriptionDetails.this);
-        View inflatedLayout3 = inflater3.inflate(R.layout.member_entry, null, false);
-        scr.addView(inflatedLayout3);
+        }
 
     }
     @SuppressLint("ResourceAsColor")
