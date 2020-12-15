@@ -66,18 +66,18 @@ public class HomeFragment extends Fragment {
     }
 
     public class AsyncGetSubs extends AsyncTask<Void, View, Void> {
-
+/**
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            p = new ProgressDialog(getActivity());
-            p.setMessage("Getting subscriptions");
+            //p = new ProgressDialog(getActivity());
+            //p.setMessage("Getting subscriptions");
             p.setIndeterminate(false);
             p.setCancelable(false);
             p.show();
         }
 
-
+**/
         @Override
         protected Void doInBackground(Void... voids) {
 
@@ -147,7 +147,7 @@ public class HomeFragment extends Fragment {
 
         @Override
         protected void onProgressUpdate(View... v) {
-            p.dismiss();
+   //         p.dismiss();
             homeView.addView(v[0]);
         }
 

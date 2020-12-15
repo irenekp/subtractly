@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -53,7 +55,7 @@ import okhttp3.Response;
 
 public class FeedFragment extends Fragment {
     private LinearLayout feedview;
-    private ProgressDialog p;
+    private TransparentProgressDialog p;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_feed, container, false);
@@ -78,9 +80,10 @@ public class FeedFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            p = new ProgressDialog(getActivity());
-            p.setMessage("Customizing your feed!");
-            p.setIndeterminate(false);
+            p = new TransparentProgressDialog(getActivity());
+            p.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            //p.setMessage("Please wait...It is downloading");
+            //p.setIndeterminate(false);
             p.setCancelable(false);
             p.show();
         }
