@@ -56,14 +56,8 @@ public class SubscriptionDetails extends AppCompatActivity {
         //LOGO
         ImageView sublogo = (ImageView)findViewById(R.id.detailsLogo);
         sublogo.setImageResource(Integer.parseInt(subArr[5]));
-        //Progress Bar
-        int max=90;
-        int progress=60;
-        ProgressBar pb =findViewById(R.id.progressbar);
-        pb.setMax(max);
-        pb.setProgress(progress);
-        //DAYS LEFT
-        String daysleft=""+progress;
+         //DAYS LEFT
+        String daysleft="";
         TextView tv_daysleft=findViewById(R.id.daysleft);
         tv_daysleft.setText(daysleft);
         //NO OF MEMBERS
