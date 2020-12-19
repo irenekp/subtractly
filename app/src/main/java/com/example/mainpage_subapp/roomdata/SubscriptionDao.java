@@ -7,6 +7,7 @@ package com.example.mainpage_subapp.roomdata;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
@@ -27,7 +28,7 @@ public interface SubscriptionDao {
     @Delete
     void Delete(Subscription subscription);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertUser(SubscriptionGroup subscriptionGroup);
 
     //for any and all customised operations - you use a @Query tag and add your query, like so:

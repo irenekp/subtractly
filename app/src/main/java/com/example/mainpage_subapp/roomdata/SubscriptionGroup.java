@@ -13,8 +13,8 @@ import java.util.List;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-
-@Entity(tableName = "subgroup", foreignKeys = @ForeignKey(entity = Subscription.class, parentColumns = "id", childColumns = "subid", onDelete = CASCADE))
+//, foreignKeys = @ForeignKey(entity = Subscription.class, parentColumns = "id", childColumns = "subid", onDelete = CASCADE)
+@Entity(tableName = "subgroup")
 public class SubscriptionGroup implements Parcelable {
 
     @NonNull
@@ -48,6 +48,14 @@ public class SubscriptionGroup implements Parcelable {
 
     public void setUser_id(int user_id) {
         this.user_id = user_id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setSubid(String subid) {
+        this.subid = subid;
     }
 
     @Override

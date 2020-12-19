@@ -43,6 +43,8 @@ public class HomeFragment extends Fragment {
 
     private LinearLayout homeView;
 
+
+
     private List<Subscription> dataSet;
     private List<SubscriptionGroup> memberList;
     private List<String> membersOfSub;
@@ -86,10 +88,9 @@ public class HomeFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
 
 
-
+            SubscriptionDatabase subDb = SubscriptionDatabase.getInstance(getActivity());
 
             //appending data from dataset into the various textviews/imageviews;
-            SubscriptionDatabase subDb = SubscriptionDatabase.getInstance(getActivity());
             dataSet = subDb.subscriptionDao().getAllSubscriptions();
             memberList = subDb.subscriptionDao().getUsername();
 

@@ -14,12 +14,14 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,15 +30,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mainpage_subapp.R;
 
+import com.example.mainpage_subapp.ui.home.HomeFragment;
 import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -46,19 +52,17 @@ public class SubscriptionDetails extends AppCompatActivity {
     public LayoutInflater inflater;
     public ViewGroup container;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         String[] subArr = getIntent().getStringArrayExtra("subArr");
         String[] members = getIntent().getStringArrayExtra("subMembers");
 
-        for(int x = 0; x<members.length; x++){
-            System.out.println(members[x]);
-        }
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscription_details);
-
         //SUB NAME
         String SubscriptionType = subArr[0];
         //CATEGORY
@@ -68,7 +72,7 @@ public class SubscriptionDetails extends AppCompatActivity {
         //PLAN_PRICE
         String plan_price = subArr[2];
         TextView tv_plan_price = findViewById(R.id.plan_price);
-        tv_plan_price.setText(plan_price);
+        tv_plan_price.setText("₹" + plan_price);
         //DUE DATE
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = Calendar.getInstance();
@@ -86,7 +90,6 @@ public class SubscriptionDetails extends AppCompatActivity {
         TextView tv_duedate = findViewById(R.id.duedate);
         tv_duedate.setText("Due: " + endDate);
         //BILLING CYCLE
-        String billingcycle = subArr[3];
         TextView tv_billingcycle = findViewById(R.id.billingcycle);
         tv_billingcycle.setText("" + subArr[3] + " day billing cycle");
         //LOGO
@@ -109,7 +112,8 @@ public class SubscriptionDetails extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showCustomDialog();
+
+                        addMyMember(members, subArr);
 
                 /*
                 LinearLayout scr = findViewById(R.id.presentmembers);
@@ -129,12 +133,71 @@ public class SubscriptionDetails extends AppCompatActivity {
             subName.setText(members[i]);
             TextView memshare = (TextView)inflatedLayout1.findViewById(R.id.membershare);
             String share = ""+ (Integer.parseInt(subArr[2])/members.length);
-            memshare.setText(""+share);
+            memshare.setText("₹"+share);
             scr.addView(inflatedLayout1);
         }
 
     }
 
+
+
+public void addMyMember(String[] members, String[] subArr){
+
+    LinearLayout scr = findViewById(R.id.presentmembers);
+    LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
+    View inflatedLayout1 = inflater.inflate(R.layout.entering_members, null, false);
+    EditText name=inflatedLayout1.findViewById(R.id.enterName);
+    Button addMem=inflatedLayout1.findViewById(R.id.addMem);
+    addMem.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String memName=name.getText().toString();
+            View inflatedLayout2 = inflater.inflate(R.layout.member_entry, null, false);
+            TextView myName=inflatedLayout2.findViewById(R.id.memberThingy);
+            myName.setText(memName);
+            List<String> memList = new ArrayList();
+            Collections.addAll(memList, members);
+            memList.add(memName);
+            String[] updatedMembers = memList.toArray(new String[0]);
+
+            AsyncTask.execute(new Runnable() {
+                @Override
+                public void run() {
+                    // Insert Data
+                    SubscriptionDatabase.getInstance(getApplicationContext()).subscriptionDao().insertUser(new SubscriptionGroup(subArr[8], memName));
+
+                }
+            });
+
+            AsyncTask.execute(new Runnable(){
+                @Override
+                public void run(){
+                    List<String> x = SubscriptionDatabase.getInstance(getApplicationContext()).subscriptionDao().getSubUsers(subArr[8]);
+                    for(int y = 0; y<x.size(); y++){
+                        System.out.println(x.get(y));
+                    }
+                }
+            });
+            scr.removeAllViewsInLayout();
+            refreshScreen(updatedMembers, subArr);
+        }
+    });
+    scr.addView(inflatedLayout1);
+}
+
+public void refreshScreen(String[] members, String[] subArr){
+for(int i = 0; i < members.length; i++){
+        LinearLayout scr = findViewById(R.id.presentmembers);
+        LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
+        View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
+        TextView subName = (TextView)inflatedLayout1.findViewById(R.id.memberThingy);
+        subName.setText(members[i]);
+        TextView memshare = (TextView)inflatedLayout1.findViewById(R.id.membershare);
+        String share = ""+ (Integer.parseInt(subArr[2])/members.length);
+        memshare.setText("₹"+share);
+        scr.addView(inflatedLayout1);
+    }
+}
 
     @SuppressLint("ResourceAsColor")
     public void showCustomDialog() {

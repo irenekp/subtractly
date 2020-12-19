@@ -32,12 +32,19 @@ public abstract class SubscriptionDatabase extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     SubscriptionDatabase.class, "subscription_database")
+                    .allowMainThreadQueries()
                     .fallbackToDestructiveMigration() //this has to do with version control and android APIs
                     .addCallback(roomCallback)
                     .build();
         }
         return instance;
     }
+
+    public static void destroyInstance() {
+        System.out.println("Instance destroyed!");
+        instance = null;
+    }
+
 
 
     private static RoomDatabase.Callback roomCallback = new RoomDatabase.Callback() {
