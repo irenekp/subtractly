@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.room.Query;
 
 import com.example.mainpage_subapp.R;
 import com.example.mainpage_subapp.roomdata.Subscription;
@@ -30,6 +32,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +44,8 @@ public class HomeFragment extends Fragment {
     private LinearLayout homeView;
 
     private List<Subscription> dataSet;
-    private List<SubscriptionGroup> trial;
+    private List<SubscriptionGroup> memberList;
+    private List<String> membersOfSub;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -87,27 +91,36 @@ public class HomeFragment extends Fragment {
             //appending data from dataset into the various textviews/imageviews;
             SubscriptionDatabase subDb = SubscriptionDatabase.getInstance(getActivity());
             dataSet = subDb.subscriptionDao().getAllSubscriptions();
-
+            memberList = subDb.subscriptionDao().getUsername();
 
             for (int i = 0; i < dataSet.size(); i++) {
+
+
 
                 //init layout inflater and use cv to find all our views
                 LayoutInflater li = LayoutInflater.from(getContext());
                 View cv = li.inflate(R.layout.cards_layout, null);
 
+                membersOfSub = subDb.subscriptionDao().getSubUsers(dataSet.get(i).getId());
+                String[] memArr = membersOfSub.toArray(new String[0]);
 
+                for(int x = 0; x<membersOfSub.size(); x++){
+                    System.out.println(membersOfSub.get(x));
+                }
 
                 TextView name, shared, price, cycle, plan, daysLeft;
                 ImageView icon;
+
 
                 //creating a string array of data to pass to the next intent
                 String sname, sshared, sprice, scycle, splan, sicon, sdaysleft;
                 sname = dataSet.get(i).getName();
                 sshared = "" + dataSet.get(i).getShared();
-                sprice = "₹" + dataSet.get(i).getPrice();
-                scycle = dataSet.get(i).getBilling_cycle()+"";
+                sprice = "" + dataSet.get(i).getPrice();
+                scycle = dataSet.get(i).getBilling_cycle() + "";
                 splan = dataSet.get(i).getPlan() + " plan";
                 sicon = "" + dataSet.get(i).getIcon();
+
 
                 //DATE LOGIC///////////////////////
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -115,10 +128,10 @@ public class HomeFragment extends Fragment {
                 Calendar today = Calendar.getInstance();
                 today.set(Calendar.HOUR_OF_DAY, 0);
                 String startDate = dataSet.get(i).getStart_date();
-                try{
+                try {
                     //Setting the date to the given date
                     c.setTime(sdf.parse(startDate));
-                }catch(ParseException e){
+                } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 c.add(Calendar.DAY_OF_MONTH, dataSet.get(i).getBilling_cycle());
@@ -127,12 +140,16 @@ public class HomeFragment extends Fragment {
                 Date d1 = today.getTime();
                 Date d2 = c.getTime();
                 long diff = d2.getTime() - d1.getTime();
-                int days = (int) (diff / (1000*60*60*24));
+                int days = (int) (diff / (1000 * 60 * 60 * 24));
 
-                sdaysleft = ""+days;
+                sdaysleft = "" + days;
                 /////////////////////////////
+                String sId = dataSet.get(i).getId();
+                //MEMBERS AND SENDING MEMBER USERNAMES
+                //we will be parsing the members List<SubscriptionGroup> object and creating an arraylist that we will then send
+                //to the subdetails page via putextra
 
-                final String[] subArr = {sname, sshared, sprice, scycle, splan, sicon, sdaysleft, startDate};
+                final String[] subArr = {sname, sshared, sprice, scycle, splan, sicon, sdaysleft, startDate, sId};
 
                 name = (TextView) cv.findViewById(R.id.textViewName);
                 name.setText(sname);
@@ -141,10 +158,10 @@ public class HomeFragment extends Fragment {
                 shared.setText("Shared by " + sshared);
 
                 price = (TextView) cv.findViewById(R.id.textPrice);
-                price.setText(sprice);
+                price.setText("₹" + sprice);
 
                 cycle = (TextView) cv.findViewById(R.id.textBilling);
-                cycle.setText(scycle+ " day billing cycle");
+                cycle.setText(scycle + " day billing cycle");
 
                 plan = (TextView) cv.findViewById(R.id.textPlan);
                 plan.setText(splan);
@@ -153,7 +170,7 @@ public class HomeFragment extends Fragment {
                 icon.setImageResource(Integer.parseInt(sicon));
 
                 daysLeft = (TextView) cv.findViewById(R.id.textDaysLeft);
-                daysLeft.setText(sdaysleft+ " days left");
+                daysLeft.setText(sdaysleft + " days left");
 
 
                 cv.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +179,8 @@ public class HomeFragment extends Fragment {
                     public void onClick(View view) {
                         Intent intent = new Intent(getActivity(), SubscriptionDetails.class);
                         intent.putExtra("subArr", subArr);
+                        intent.putExtra("subMembers", memArr);
+                        intent.putParcelableArrayListExtra("memberList", (ArrayList) memberList);
                         startActivity(intent);
                     }
                 });

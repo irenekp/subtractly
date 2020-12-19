@@ -24,7 +24,7 @@ public class AddMembersDialog extends DialogFragment {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        // sign in the user ...
+
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

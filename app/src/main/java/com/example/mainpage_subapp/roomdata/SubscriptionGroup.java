@@ -1,52 +1,81 @@
 package com.example.mainpage_subapp.roomdata;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import java.util.List;
+
+import static androidx.room.ForeignKey.CASCADE;
 
 
-@Entity(tableName = "subgroup", foreignKeys = @ForeignKey(entity = Subscription.class, parentColumns = "id", childColumns = "id"))
-public class SubscriptionGroup {
+@Entity(tableName = "subgroup", foreignKeys = @ForeignKey(entity = Subscription.class, parentColumns = "id", childColumns = "subid", onDelete = CASCADE))
+public class SubscriptionGroup implements Parcelable {
 
+    @NonNull
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "group_id")
-    private int group_id;
+    @ColumnInfo(name = "user_id")
+    private int user_id;
+
+    @ColumnInfo(name = "username")
+    private String username;
+
+    @ColumnInfo(name = "subid")
+    private String subid;
 
 
-    @ColumnInfo(name = "id", index = true)
-    private int id;
-
-    @ColumnInfo(name = "start_date")
-    private String start_date;
-
-    public SubscriptionGroup(int id, String start_date) {
-        this.id = id;
-        this.start_date = start_date;
+    public SubscriptionGroup(String username, String subid) {
+        this.username = username;
+        this.subid = subid;
     }
 
-    public int getGroup_id() {
-        return group_id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setGroup_id(int group_id) {
-        this.group_id = group_id;
+    public String getSubid() {
+        return subid;
     }
 
-    public int getId() {
-        return id;
+    public int getUser_id() {
+        return user_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 
-    public String getStart_date() {
-        return start_date;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setStart_date(String start_date) {
-        this.start_date = start_date;
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(user_id);
+        parcel.writeString(username);
+        parcel.writeString(subid);
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public SubscriptionGroup createFromParcel(Parcel in) {
+            return new SubscriptionGroup(in);
+        }
+
+        public SubscriptionGroup[] newArray(int size) {
+            return new SubscriptionGroup[size];
+        }
+
+    };
+
+    private SubscriptionGroup(Parcel in) {
+        user_id = in.readInt();
+        username = in.readString();
+        subid = in.readString();
     }
 }

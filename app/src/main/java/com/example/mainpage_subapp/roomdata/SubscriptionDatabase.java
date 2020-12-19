@@ -58,12 +58,30 @@ public abstract class SubscriptionDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(Void... voids) {
 
-            SubscriptionDao.insert(new Subscription("Netflix", "Family", 899, 4, 30, R.drawable.netflix, "14/12/2020"));
-            SubscriptionDao.insert(new Subscription("Spotify", "Duo", 399, 2, 90, R.drawable.spotify, "06/11/2020"));
-            SubscriptionDao.insert(new Subscription("PrimeVideo", "Family", 999, 4, 365, R.drawable.primevideo, "25/06/2020"));
-            SubscriptionDao.insert(new Subscription("Netflix", "Individual", 129, 1, 30, R.drawable.netflix, "17/12/2020"));
-            SubscriptionDao.insert(new Subscription("Spotify", "Family", 199, 4, 30, R.drawable.spotify, "7/12/2020"));
+            SubscriptionDao.insert(new Subscription("NetFam30", "Netflix", "Family", 899, 4, 30, R.drawable.netflix, "14/12/2020"));
+            SubscriptionDao.insert(new Subscription("SpotDuo90", "Spotify", "Duo", 399, 2, 90, R.drawable.spotify, "06/11/2020"));
+            SubscriptionDao.insert(new Subscription("PrimeFam365", "PrimeVideo", "Family", 999, 4, 365, R.drawable.primevideo, "25/06/2020"));
+            SubscriptionDao.insert(new Subscription("NetInd30", "Netflix", "Individual", 129, 1, 30, R.drawable.netflix, "17/12/2020"));
+            SubscriptionDao.insert(new Subscription("SpotFam30", "Spotify", "Family", 199, 4, 30, R.drawable.spotify, "7/12/2020"));
 
+            SubscriptionDao.insertUser(new SubscriptionGroup("Michael Scott", "NetFam30"));
+            SubscriptionDao.insertUser(new SubscriptionGroup("Jim Halpert", "NetFam30"));
+            SubscriptionDao.insertUser(new SubscriptionGroup("Pam Beesly", "NetFam30"));
+
+            SubscriptionDao.insertUser(new SubscriptionGroup("Anirudh", "SpotDuo90"));
+            SubscriptionDao.insertUser(new SubscriptionGroup("Irene", "SpotDuo90"));
+
+            SubscriptionDao.insertUser(new SubscriptionGroup("Rachel", "PrimeFam365"));
+            SubscriptionDao.insertUser(new SubscriptionGroup("Ross", "PrimeFam365"));
+            SubscriptionDao.insertUser(new SubscriptionGroup("Monica", "PrimeFam365"));
+            SubscriptionDao.insertUser(new SubscriptionGroup("Phoebe", "PrimeFam365"));
+
+            SubscriptionDao.insertUser(new SubscriptionGroup("Toby", "NetInd30"));
+
+            SubscriptionDao.insertUser(new SubscriptionGroup("Homer", "SpotFam30"));
+            SubscriptionDao.insertUser(new SubscriptionGroup("Marge", "SpotFam30"));
+            SubscriptionDao.insertUser(new SubscriptionGroup("Lisa", "SpotFam30"));
+            SubscriptionDao.insertUser(new SubscriptionGroup("Bart", "SpotFam30"));
             return null;
         }
     }

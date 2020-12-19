@@ -4,8 +4,6 @@ package com.example.mainpage_subapp.roomdata;
 //DAOs are never classes - they are either interfaces or abstract classes - since we just need to tell room 'hey, run your methods here, and
 //the actual methods are provided by room itself for querying things.
 
-import android.util.Pair;
-
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -30,12 +28,16 @@ public interface SubscriptionDao {
     void Delete(Subscription subscription);
 
     @Insert
-    void insertGroup(SubscriptionGroup subscriptionGroup);
+    void insertUser(SubscriptionGroup subscriptionGroup);
 
     //for any and all customised operations - you use a @Query tag and add your query, like so:
     @Query("SELECT * FROM subscriptions")
     List<Subscription> getAllSubscriptions();
 
+    @Query("SELECT * FROM subgroup")
+    List<SubscriptionGroup> getUsername();
 
+    @Query("SELECT username FROM subgroup where subid==:subId")
+    List<String> getSubUsers(String subId);
 
 }

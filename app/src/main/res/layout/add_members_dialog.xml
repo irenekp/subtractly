@@ -18,29 +18,6 @@
 
     <!--android:visibility="gone"-->
 
-    <TextView
-        android:id="@+id/PickShare_control"
-        android:layout_width="114dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="76dp"
-        android:text="Share:"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/EnterAmt_control"
-        android:layout_width="114dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="124dp"
-        android:text="Amount:"
-        android:textSize="18sp"
-
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/memberName"
@@ -54,49 +31,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/sharetype"
-        android:layout_width="53dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="74dp"
-        android:showText="false"
-        android:textOff="Equal"
-        android:textOn="Custom"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/shareAmt"
-        android:layout_width="83dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="118dp"
-        android:ems="10"
-        android:hint="Ex: 1000"
-        android:inputType="numberDecimal"
-        android:visibility="visible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="80dp"
-        android:text="Equal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="184dp"
-        android:layout_marginTop="80dp"
-        android:text="Custom"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
