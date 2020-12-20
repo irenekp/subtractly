@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.example.mainpage_subapp.firebasedata.MembersFB;
+import com.example.mainpage_subapp.firebasedata.SubscriptionFB;
 import com.example.mainpage_subapp.roomdata.Subscription;
 import com.example.mainpage_subapp.roomdata.SubscriptionDatabase;
 import com.example.mainpage_subapp.roomdata.SubscriptionGroup;
@@ -18,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +38,12 @@ import android.widget.Toast;
 import com.example.mainpage_subapp.R;
 
 import com.example.mainpage_subapp.ui.home.HomeFragment;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.w3c.dom.Text;
 
 import java.text.ParseException;
@@ -45,6 +54,8 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static android.content.ContentValues.TAG;
 
 public class SubscriptionDetails extends AppCompatActivity {
 
@@ -57,14 +68,94 @@ public class SubscriptionDetails extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        String[] subArr = getIntent().getStringArrayExtra("subArr");
-        String[] members = getIntent().getStringArrayExtra("subMembers");
+        String subArr = getIntent().getStringExtra("subArr");
+        System.out.println(subArr);
+        String sdaysleft = getIntent().getStringExtra("sdaysleft");
+        //String[] members = getIntent().getStringArrayExtra("subMembers");
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("subscriptions");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscription_details);
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                {
+                    SubscriptionFB subscription = dataSnapshot.child(subArr).getValue(SubscriptionFB.class);
+
+                    TextView tv_category = findViewById(R.id.category);
+                    tv_category.setText(subscription.plan);
+
+                    TextView tv_plan_price = findViewById(R.id.plan_price);
+                    tv_plan_price.setText("₹" + subscription.price);
+
+                    TextView tv_billingcycle = findViewById(R.id.billingcycle);
+                    tv_billingcycle.setText(subscription.billing_cycle + " day billing cycle");
+
+                    ImageView sublogo = (ImageView) findViewById(R.id.detailsLogo);
+                    sublogo.setImageResource(subscription.icon);
+
+                    TextView tv_daysleft = findViewById(R.id.daysleft);
+                    tv_daysleft.setText(sdaysleft);
+
+                    //DUE DATE
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    Calendar c = Calendar.getInstance();
+                    Calendar today = Calendar.getInstance();
+                    today.set(Calendar.HOUR_OF_DAY, 0);
+                    String startDate = subscription.start_date;
+                    try {
+                        //Setting the date to the given date
+                        c.setTime(sdf.parse(startDate));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    c.add(Calendar.DAY_OF_MONTH, subscription.billing_cycle);
+                    String endDate = sdf.format(c.getTime());
+                    TextView tv_duedate = findViewById(R.id.duedate);
+                    tv_duedate.setText("Due: " + endDate);
+
+                }
+            }
+                @Override
+                public void onCancelled(DatabaseError error) {
+                    // Failed to read value
+                    Log.w(TAG, "Failed to read value.", error.toException());
+                }
+            });
+
+
+        //DISPLAYING ALL MEMBERS VIA FIREBASE
+        DatabaseReference memberRef = database.getReference("members");
+        memberRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                MembersFB members = snapshot.child(subArr).getValue(MembersFB.class);
+
+                for(int i = 0; i<snapshot.child(subArr).getChildrenCount(); i++){
+
+                    LinearLayout scr = findViewById(R.id.presentmembers);
+                    LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
+                    View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
+                    TextView subName = (TextView)inflatedLayout1.findViewById(R.id.memberThingy);
+                    subName.setText(members.member_name);
+                    scr.addView(inflatedLayout1);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        /*
         //SUB NAME
-        String SubscriptionType = subArr[0];
+        String SubscriptionType =
         //CATEGORY
         String category = subArr[4];
         TextView tv_category = findViewById(R.id.category);
@@ -121,9 +212,11 @@ public class SubscriptionDetails extends AppCompatActivity {
                 View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
                 scr.addView(inflatedLayout1);
 
-                 */
+
             }
+
         });
+
 
         for(int i = 0; i < members.length; i++){
             LinearLayout scr = findViewById(R.id.presentmembers);
@@ -138,6 +231,7 @@ public class SubscriptionDetails extends AppCompatActivity {
         }
 
     }
+
 
 
 
@@ -245,6 +339,6 @@ for(int i = 0; i < members.length; i++){
         });
 
          */
-    }
+                }
+            }
 
-}
