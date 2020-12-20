@@ -69,7 +69,6 @@ public class SubscriptionDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         String subArr = getIntent().getStringExtra("subArr");
-        System.out.println(subArr);
         String sdaysleft = getIntent().getStringExtra("sdaysleft");
         //String[] members = getIntent().getStringArrayExtra("subMembers");
 
@@ -128,24 +127,21 @@ public class SubscriptionDetails extends AppCompatActivity {
 
 
         //DISPLAYING ALL MEMBERS VIA FIREBASE
-        DatabaseReference memberRef = database.getReference("members");
+        DatabaseReference memberRef = database.getReference(subArr);
         memberRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                MembersFB members = snapshot.child(subArr).getValue(MembersFB.class);
-
-                for(int i = 0; i<snapshot.child(subArr).getChildrenCount(); i++){
 
                     LinearLayout scr = findViewById(R.id.presentmembers);
                     LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
                     View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
-                    TextView subName = (TextView)inflatedLayout1.findViewById(R.id.memberThingy);
-                    subName.setText(members.member_name);
+                    TextView subName = (TextView) inflatedLayout1.findViewById(R.id.memberThingy);
                     scr.addView(inflatedLayout1);
 
                 }
 
-            }
+
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

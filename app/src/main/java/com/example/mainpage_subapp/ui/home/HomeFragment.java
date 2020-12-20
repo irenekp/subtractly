@@ -106,7 +106,8 @@ public class HomeFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
 
 
-
+            SubscriptionFB obj = new SubscriptionFB();
+            obj.populateDB();
 
             SubscriptionDatabase subDb = SubscriptionDatabase.getInstance(getActivity());
 

@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.example.mainpage_subapp.R;
 
@@ -62,11 +63,16 @@ public class addSubActivity extends AppCompatActivity {
         addMem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 LinearLayout scr = findViewById(R.id.memberlist);
                 LayoutInflater inflater = LayoutInflater.from(addSubActivity.this);
-
+                EditText memname = (EditText) scr.findViewById(R.id.memberName);
+                String name = memname.getText().toString();
                 View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
+                TextView setname = inflatedLayout1.findViewById(R.id.memberThingy);
+                setname.setText(name);
                 scr.addView(inflatedLayout1);
+
             }
         });
 

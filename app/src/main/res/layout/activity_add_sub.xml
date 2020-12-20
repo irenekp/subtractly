@@ -157,8 +157,7 @@
         android:layout_marginTop="380dp"
         android:ems="10"
         android:hint="Name"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -176,14 +175,14 @@
 
     <EditText
         android:id="@+id/StartDate"
-        android:focusable="false"
         android:layout_width="160dp"
         android:layout_height="48dp"
         android:layout_marginStart="232dp"
-        android:layout_marginTop="152dp"
+        android:layout_marginTop="144dp"
         android:clickable="true"
         android:editable="false"
         android:ems="10"
+        android:focusable="false"
         android:inputType="textPersonName"
         android:text="Date"
         app:layout_constraintStart_toStartOf="parent"
