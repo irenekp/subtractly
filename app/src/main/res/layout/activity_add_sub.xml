@@ -84,6 +84,7 @@
             android:layout_width="83dp"
             android:layout_height="22dp"
             android:layout_marginStart="4dp"
+            android:checked="true"
             android:text="30 days"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"

@@ -74,10 +74,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
             Toast.makeText(SignUp.this, "Enter Password", Toast.LENGTH_SHORT).show();
             return;
         } else if (password.length() < 6) {
-            Toast.makeText(SignUp.this, "Password must be greater then 6 digit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUp.this, "Password must be greater then 6 digits", Toast.LENGTH_SHORT).show();
             return;
         }
-        mDialog.setMessage("Creating User please wait...");
+        mDialog.setMessage("Creating User!");
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.show();
 

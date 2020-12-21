@@ -77,6 +77,7 @@ public class HomeFragment extends Fragment {
 
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("subscriptions");
+                homeView.removeAllViewsInLayout();
 
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override

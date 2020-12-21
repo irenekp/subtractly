@@ -102,7 +102,7 @@ public class addSubActivity extends AppCompatActivity {
                 String name;
                 String date;
                 String plan;
-                int price;
+                int price = 0;
                 int cyclePlan;
                 final String[] cycle = new String[1];
 
@@ -110,40 +110,44 @@ public class addSubActivity extends AppCompatActivity {
                 EditText memprice = (EditText) findViewById(R.id.subPriceText);
                 EditText memDate = (EditText) findViewById(R.id.StartDate);
                 Spinner planType = (Spinner) findViewById(R.id.planType);
-                RadioGroup cycleSpan = (RadioGroup)findViewById(R.id.cycleLength);
+                RadioGroup cycleSpan = (RadioGroup) findViewById(R.id.cycleLength);
                 RadioButton one, three, full;
-                one = (RadioButton)findViewById(R.id.onemonth);
-                three = (RadioButton)findViewById(R.id.threemonth);
-                full = (RadioButton)findViewById(R.id.oneyear);
+                one = (RadioButton) findViewById(R.id.onemonth);
+                three = (RadioButton) findViewById(R.id.threemonth);
+                full = (RadioButton) findViewById(R.id.oneyear);
 
-                if(one.isChecked()){
+                if (one.isChecked()) {
                     cyclePlan = 30;
-                }
-
-                else if(three.isChecked()){
+                } else if (three.isChecked()) {
                     cyclePlan = 90;
-                }
-
-                else if(full.isChecked()){
+                } else if (full.isChecked()) {
                     cyclePlan = 365;
-                }
-
-                else{
+                } else {
                     cyclePlan = 30;
                 }
 
-                name = subname.getText().toString();
-                price = Integer.parseInt(memprice.getText().toString());
-                date = memDate.getText().toString();
-                plan = planType.getSelectedItem().toString();
-                membersToAdd.add(new MembersFB("You"));
-                int shared = membersToAdd.size();
-                String id = name.substring(0,4)+plan.substring(0,4)+price;
-                SubscriptionFB toAdd = new SubscriptionFB();
-                toAdd.insertSubscription(id, name, plan, price, shared, cyclePlan, R.drawable.ic_launcher, date, membersToAdd);
-                Intent i;
-                i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
+                if (subname.getText().toString().equals("")) {
+                    subname.setError("Subscription name is required!");
+                } else if (memprice.getText().toString().equals("")) {
+                    memprice.setError("Price is required!");
+                }
+                else if (memDate.getText().toString().equals("Date")) {
+                    memDate.setError("Date is a required field!");
+                }
+                else {
+                    price = Integer.parseInt(memprice.getText().toString());
+                    date = memDate.getText().toString();
+                    name = subname.getText().toString();
+                    plan = planType.getSelectedItem().toString();
+                    membersToAdd.add(new MembersFB("You"));
+                    int shared = membersToAdd.size();
+                    String id = name.substring(0, 4) + plan.substring(0, 4) + price;
+                    SubscriptionFB toAdd = new SubscriptionFB();
+                    toAdd.insertSubscription(id, name, plan, price, shared, cyclePlan, R.drawable.ic_launcher, date, membersToAdd);
+                    Intent i;
+                    i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+                }
             }
         });
 

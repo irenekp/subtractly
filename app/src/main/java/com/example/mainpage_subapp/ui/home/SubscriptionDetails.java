@@ -200,17 +200,7 @@ public class SubscriptionDetails extends AppCompatActivity {
                                 scr.addView(inflatedLayout1);
                             }
 
-
                         });
-
-
-
-
-
-
-
-
-
 
                     }
 
