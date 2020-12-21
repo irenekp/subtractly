@@ -90,7 +90,6 @@ public class addSubActivity extends AppCompatActivity {
                 setname.setText(name);
                 scr.addView(inflatedLayout1);
                 memname.setText("");
-
             }
         });
 
@@ -102,6 +101,7 @@ public class addSubActivity extends AppCompatActivity {
                 String name;
                 String date;
                 String plan;
+                String service_type;
                 int price;
                 int cyclePlan;
                 final String[] cycle = new String[1];
@@ -110,6 +110,7 @@ public class addSubActivity extends AppCompatActivity {
                 EditText memprice = (EditText) findViewById(R.id.subPriceText);
                 EditText memDate = (EditText) findViewById(R.id.StartDate);
                 Spinner planType = (Spinner) findViewById(R.id.planType);
+                Spinner serviceType = (Spinner) findViewById(R.id.ServiceType);
                 RadioGroup cycleSpan = (RadioGroup)findViewById(R.id.cycleLength);
                 RadioButton one, three, full;
                 one = (RadioButton)findViewById(R.id.onemonth);
@@ -136,17 +137,17 @@ public class addSubActivity extends AppCompatActivity {
                 price = Integer.parseInt(memprice.getText().toString());
                 date = memDate.getText().toString();
                 plan = planType.getSelectedItem().toString();
+                service_type=serviceType.getSelectedItem().toString();
                 membersToAdd.add(new MembersFB("You"));
                 int shared = membersToAdd.size();
                 String id = name.substring(0,4)+plan.substring(0,4)+price;
                 SubscriptionFB toAdd = new SubscriptionFB();
-                toAdd.insertSubscription(id, name, plan, price, shared, cyclePlan, R.drawable.ic_launcher, date, membersToAdd);
+                toAdd.insertSubscription(id, name, plan, price, shared, cyclePlan, R.drawable.ic_launcher, date, membersToAdd,service_type);
                 Intent i;
                 i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
             }
         });
-
     }
 
 }

@@ -193,7 +193,7 @@ public class SubscriptionDetails extends AppCompatActivity {
                                             newListOfMembers.add(new MembersFB(membernames.get(x)));
                                         }
                                         SubscriptionFB overwriteDB = new SubscriptionFB();
-                                        overwriteDB.insertSubscription(subscriptionFB.id, subscriptionFB.name, subscriptionFB.plan, subscriptionFB.price, (subscriptionFB.shared+1), subscriptionFB.billing_cycle, subscriptionFB.icon, subscriptionFB.start_date, newListOfMembers);
+                                        overwriteDB.insertSubscription(subscriptionFB.id, subscriptionFB.name, subscriptionFB.plan, subscriptionFB.price, (subscriptionFB.shared+1), subscriptionFB.billing_cycle, subscriptionFB.icon, subscriptionFB.start_date, newListOfMembers,subscriptionFB.service_type);
                                         scr.removeAllViewsInLayout();
                                     }
                                 });
