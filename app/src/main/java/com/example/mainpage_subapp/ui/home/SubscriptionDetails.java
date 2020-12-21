@@ -1,59 +1,38 @@
 package com.example.mainpage_subapp.ui.home;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.example.mainpage_subapp.firebasedata.MembersFB;
 import com.example.mainpage_subapp.firebasedata.SubscriptionFB;
-import com.example.mainpage_subapp.roomdata.Subscription;
-import com.example.mainpage_subapp.roomdata.SubscriptionDatabase;
-import com.example.mainpage_subapp.roomdata.SubscriptionGroup;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mainpage_subapp.R;
 
-import com.example.mainpage_subapp.ui.home.HomeFragment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
 import static android.content.ContentValues.TAG;
 
@@ -62,7 +41,6 @@ public class SubscriptionDetails extends AppCompatActivity {
     public LinearLayout scr;
     public LayoutInflater inflater;
     public ViewGroup container;
-
 
 
     @Override
@@ -118,29 +96,115 @@ public class SubscriptionDetails extends AppCompatActivity {
 
                 }
             }
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    // Failed to read value
-                    Log.w(TAG, "Failed to read value.", error.toException());
-                }
-            });
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
 
 
         //DISPLAYING ALL MEMBERS VIA FIREBASE
-        DatabaseReference memberRef = database.getReference(subArr);
+        DatabaseReference memberRef = database.getReference("subscriptions");
+        memberRef.keepSynced(true);
+
         memberRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    LinearLayout scr = findViewById(R.id.presentmembers);
-                    LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
-                    View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
-                    TextView subName = (TextView) inflatedLayout1.findViewById(R.id.memberThingy);
-                    scr.addView(inflatedLayout1);
+                List<String> membernames = new ArrayList<String>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    SubscriptionFB subscriptionFB = ds.getValue(SubscriptionFB.class);
+
+                    //waiting for db ref to reach the right id
+                    if (subArr.equals(subscriptionFB.id)) {
+
+                        int share = subscriptionFB.price;
+
+                        //defining the places we'll be saving these guys in
+                        LinearLayout scr = findViewById(R.id.presentmembers);
+                        LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
+                        View inflatedLayout1 = inflater.inflate(R.layout.entering_members, null, false);
+                        EditText name = inflatedLayout1.findViewById(R.id.enterName);
+
+                        //first, creating a list of all membernames
+                        for (int i = 0; i < subscriptionFB.shared; i++) {
+                            if (subscriptionFB.members != null) {
+                                membernames.add(subscriptionFB.members.get(i).member_name);
+                            }
+                        }
+
+                        for (int x = 0; x < membernames.size(); x++) {
+                            LayoutInflater inflater1 = LayoutInflater.from(SubscriptionDetails.this);
+                            View inflatedLayout2 = inflater1.inflate(R.layout.member_entry, null, false);
+                            TextView subName = (TextView) inflatedLayout2.findViewById(R.id.memberThingy);
+                            TextView memshare = (TextView) inflatedLayout2.findViewById(R.id.membershare);
+                            int mems = share / membernames.size();
+                            String memberShare = Integer.toString(mems);
+                            memshare.setText("₹" + memberShare);
+                            subName.setText(membernames.get(x));
+                            scr.addView(inflatedLayout2);
+                        }
+
+                        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_member);
+                        fab.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                addMyMember();
+
+
+                                LinearLayout scr = findViewById(R.id.presentmembers);
+                                LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
+                                View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
+                                scr.addView(inflatedLayout1);
+
+
+                            }
+
+                            private void addMyMember() {
+                                LinearLayout scr = findViewById(R.id.presentmembers);
+                                LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
+                                View inflatedLayout1 = inflater.inflate(R.layout.entering_members, null, false);
+                                EditText name=inflatedLayout1.findViewById(R.id.enterName);
+                                Button addMem=inflatedLayout1.findViewById(R.id.addMem);
+                                addMem.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        String memName = name.getText().toString();
+                                        View inflatedLayout2 = inflater.inflate(R.layout.member_entry, null, false);
+                                        TextView myName = inflatedLayout2.findViewById(R.id.memberThingy);
+                                        myName.setText(memName);
+                                        membernames.add(memName);
+                                        //insert members into db for this particular subscriptionFB
+                                        List<MembersFB> newListOfMembers = new ArrayList<MembersFB>();
+                                        for (int x = 0; x < membernames.size(); x++) {
+                                            newListOfMembers.add(new MembersFB(membernames.get(x)));
+                                        }
+                                        SubscriptionFB overwriteDB = new SubscriptionFB();
+                                        overwriteDB.insertSubscription(subscriptionFB.id, subscriptionFB.name, subscriptionFB.plan, subscriptionFB.price, subscriptionFB.shared, subscriptionFB.billing_cycle, subscriptionFB.icon, subscriptionFB.start_date, newListOfMembers);
+                                    }
+                                });
+                                scr.addView(inflatedLayout1);
+                            }
+
+
+                        });
+
+
+
+
+
+
+
+
+
+
+                    }
 
                 }
-
-
+            }
 
 
             @Override
@@ -148,6 +212,7 @@ public class SubscriptionDetails extends AppCompatActivity {
 
             }
         });
+
 
         /*
         //SUB NAME
@@ -202,7 +267,7 @@ public class SubscriptionDetails extends AppCompatActivity {
 
                         addMyMember(members, subArr);
 
-                /*
+
                 LinearLayout scr = findViewById(R.id.presentmembers);
                 LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
                 View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
@@ -335,6 +400,5 @@ for(int i = 0; i < members.length; i++){
         });
 
          */
-                }
-            }
-
+    }
+}

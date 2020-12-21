@@ -1,6 +1,5 @@
 package com.example.mainpage_subapp.ui.feed;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -16,38 +15,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mainpage_subapp.R;
-import com.example.mainpage_subapp.ui.home.DataModel;
-import com.example.mainpage_subapp.ui.home.HomeFragment;
-import com.example.mainpage_subapp.ui.home.MyData;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Date;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -136,7 +118,7 @@ public class FeedFragment extends Fragment {
                         LayoutInflater li = LayoutInflater.from(getContext());
                         View cv = li.inflate(R.layout.feed_entry, null);
                         TextView tv=cv.findViewById(R.id.articleTitle);
-                        Title = Title.substring(0, 40)+"...";
+                        Title = Title.substring(0, 45)+" ...";
                         tv.setText(Title);
                         tv=cv.findViewById(R.id.topic);
                         tv.setText(Key);

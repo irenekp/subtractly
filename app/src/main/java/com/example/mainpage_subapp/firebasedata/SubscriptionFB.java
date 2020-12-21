@@ -7,7 +7,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.PrimaryKey;
 
 import com.example.mainpage_subapp.R;
-import com.example.mainpage_subapp.roomdata.Subscription;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.mainpage_subapp.ui.home.HomeFragment;
+import com.example.mainpage_subapp.ui.login.LoginActivity;
 
 public class Splash extends Activity {
     @Override
@@ -16,7 +17,7 @@ public class Splash extends Activity {
         int secondsDelayed = 1;
         new Handler().postDelayed(new Runnable() {
             public void run() {
-                startActivity(new Intent(Splash.this, MainActivity.class));
+                startActivity(new Intent(Splash.this, LoginActivity.class));
                 finish();
             }
         }, secondsDelayed * 1000);

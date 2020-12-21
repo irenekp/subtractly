@@ -107,7 +107,7 @@
                 android:text="Title"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textColor="#F6F5F5"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
