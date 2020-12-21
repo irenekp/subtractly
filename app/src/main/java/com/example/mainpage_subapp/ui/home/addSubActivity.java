@@ -3,20 +3,31 @@ package com.example.mainpage_subapp.ui.home;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.mainpage_subapp.MainActivity;
 import com.example.mainpage_subapp.R;
+import com.example.mainpage_subapp.firebasedata.MembersFB;
+import com.example.mainpage_subapp.firebasedata.SubscriptionFB;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class addSubActivity extends AppCompatActivity {
@@ -27,6 +38,7 @@ public class addSubActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        List<MembersFB> membersToAdd = new ArrayList<MembersFB>();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sub);
@@ -66,13 +78,72 @@ public class addSubActivity extends AppCompatActivity {
 
                 LinearLayout scr = findViewById(R.id.memberlist);
                 LayoutInflater inflater = LayoutInflater.from(addSubActivity.this);
-                EditText memname = (EditText) scr.findViewById(R.id.memberName);
+                EditText memname = (EditText) findViewById(R.id.memberName);
+                EditText memprice = (EditText) findViewById(R.id.subPriceText);
+                String price = memprice.getText().toString();
                 String name = memname.getText().toString();
+                membersToAdd.add(new MembersFB(name));
                 View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
                 TextView setname = inflatedLayout1.findViewById(R.id.memberThingy);
+                TextView setprice = inflatedLayout1.findViewById(R.id.membershare);
+                setprice.setText("");
                 setname.setText(name);
                 scr.addView(inflatedLayout1);
+                memname.setText("");
 
+            }
+        });
+
+        Button addSubScription = findViewById(R.id.addsubscription);
+        addSubScription.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                String name;
+                String date;
+                String plan;
+                int price;
+                int cyclePlan;
+                final String[] cycle = new String[1];
+
+                EditText subname = (EditText) findViewById(R.id.subname);
+                EditText memprice = (EditText) findViewById(R.id.subPriceText);
+                EditText memDate = (EditText) findViewById(R.id.StartDate);
+                Spinner planType = (Spinner) findViewById(R.id.planType);
+                RadioGroup cycleSpan = (RadioGroup)findViewById(R.id.cycleLength);
+                RadioButton one, three, full;
+                one = (RadioButton)findViewById(R.id.onemonth);
+                three = (RadioButton)findViewById(R.id.threemonth);
+                full = (RadioButton)findViewById(R.id.oneyear);
+
+                if(one.isChecked()){
+                    cyclePlan = 30;
+                }
+
+                else if(three.isChecked()){
+                    cyclePlan = 90;
+                }
+
+                else if(full.isChecked()){
+                    cyclePlan = 365;
+                }
+
+                else{
+                    cyclePlan = 30;
+                }
+
+                name = subname.getText().toString();
+                price = Integer.parseInt(memprice.getText().toString());
+                date = memDate.getText().toString();
+                plan = planType.getSelectedItem().toString();
+                membersToAdd.add(new MembersFB("You"));
+                int shared = membersToAdd.size();
+                String id = name.substring(0,4)+plan.substring(0,4)+price;
+                SubscriptionFB toAdd = new SubscriptionFB();
+                toAdd.insertSubscription(id, name, plan, price, shared, cyclePlan, R.drawable.ic_launcher, date, membersToAdd);
+                Intent i;
+                i = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(i);
             }
         });
 

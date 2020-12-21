@@ -64,6 +64,11 @@ public class SubscriptionFB {
             database.child("subscriptions").child(subId).setValue(subToInsert);
         }
 
+        public void deleteSubscription(SubscriptionFB subscriptionFB, String SubId){
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference("subscriptions");
+            database.child(SubId).removeValue();
+        }
+
         public void populateDB(){
             SubscriptionFB obj = new SubscriptionFB();
 

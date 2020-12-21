@@ -1,12 +1,15 @@
 package com.example.mainpage_subapp.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.mainpage_subapp.MainActivity;
 import com.example.mainpage_subapp.firebasedata.MembersFB;
 import com.example.mainpage_subapp.firebasedata.SubscriptionFB;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -94,6 +97,17 @@ public class SubscriptionDetails extends AppCompatActivity {
                     TextView tv_duedate = findViewById(R.id.duedate);
                     tv_duedate.setText("Due: " + endDate);
 
+                    //delete subscription
+                    TextView deleteSub = findViewById(R.id.deleteSub);
+                    deleteSub.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            subscription.deleteSubscription(subscription, subArr);
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
                 }
             }
 
@@ -128,8 +142,9 @@ public class SubscriptionDetails extends AppCompatActivity {
                         View inflatedLayout1 = inflater.inflate(R.layout.entering_members, null, false);
                         EditText name = inflatedLayout1.findViewById(R.id.enterName);
 
+
                         //first, creating a list of all membernames
-                        for (int i = 0; i < subscriptionFB.shared; i++) {
+                        for (int i = 0; i < ds.child("members").getChildrenCount(); i++) {
                             if (subscriptionFB.members != null) {
                                 membernames.add(subscriptionFB.members.get(i).member_name);
                             }
@@ -138,6 +153,7 @@ public class SubscriptionDetails extends AppCompatActivity {
                         for (int x = 0; x < membernames.size(); x++) {
                             LayoutInflater inflater1 = LayoutInflater.from(SubscriptionDetails.this);
                             View inflatedLayout2 = inflater1.inflate(R.layout.member_entry, null, false);
+
                             TextView subName = (TextView) inflatedLayout2.findViewById(R.id.memberThingy);
                             TextView memshare = (TextView) inflatedLayout2.findViewById(R.id.membershare);
                             int mems = share / membernames.size();
@@ -154,13 +170,6 @@ public class SubscriptionDetails extends AppCompatActivity {
 
                                 addMyMember();
 
-
-                                LinearLayout scr = findViewById(R.id.presentmembers);
-                                LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
-                                View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
-                                scr.addView(inflatedLayout1);
-
-
                             }
 
                             private void addMyMember() {
@@ -169,6 +178,7 @@ public class SubscriptionDetails extends AppCompatActivity {
                                 View inflatedLayout1 = inflater.inflate(R.layout.entering_members, null, false);
                                 EditText name=inflatedLayout1.findViewById(R.id.enterName);
                                 Button addMem=inflatedLayout1.findViewById(R.id.addMem);
+
                                 addMem.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
@@ -183,7 +193,8 @@ public class SubscriptionDetails extends AppCompatActivity {
                                             newListOfMembers.add(new MembersFB(membernames.get(x)));
                                         }
                                         SubscriptionFB overwriteDB = new SubscriptionFB();
-                                        overwriteDB.insertSubscription(subscriptionFB.id, subscriptionFB.name, subscriptionFB.plan, subscriptionFB.price, subscriptionFB.shared, subscriptionFB.billing_cycle, subscriptionFB.icon, subscriptionFB.start_date, newListOfMembers);
+                                        overwriteDB.insertSubscription(subscriptionFB.id, subscriptionFB.name, subscriptionFB.plan, subscriptionFB.price, (subscriptionFB.shared+1), subscriptionFB.billing_cycle, subscriptionFB.icon, subscriptionFB.start_date, newListOfMembers);
+                                        scr.removeAllViewsInLayout();
                                     }
                                 });
                                 scr.addView(inflatedLayout1);
@@ -209,196 +220,10 @@ public class SubscriptionDetails extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                System.out.println("Something went wrong!");
             }
         });
 
 
-        /*
-        //SUB NAME
-        String SubscriptionType =
-        //CATEGORY
-        String category = subArr[4];
-        TextView tv_category = findViewById(R.id.category);
-        tv_category.setText(category);
-        //PLAN_PRICE
-        String plan_price = subArr[2];
-        TextView tv_plan_price = findViewById(R.id.plan_price);
-        tv_plan_price.setText("₹" + plan_price);
-        //DUE DATE
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        Calendar c = Calendar.getInstance();
-        Calendar today = Calendar.getInstance();
-        today.set(Calendar.HOUR_OF_DAY, 0);
-        String startDate = subArr[7];
-        try {
-            //Setting the date to the given date
-            c.setTime(sdf.parse(startDate));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        c.add(Calendar.DAY_OF_MONTH, Integer.parseInt(subArr[3]));
-        String endDate = sdf.format(c.getTime());
-        TextView tv_duedate = findViewById(R.id.duedate);
-        tv_duedate.setText("Due: " + endDate);
-        //BILLING CYCLE
-        TextView tv_billingcycle = findViewById(R.id.billingcycle);
-        tv_billingcycle.setText("" + subArr[3] + " day billing cycle");
-        //LOGO
-        ImageView sublogo = (ImageView) findViewById(R.id.detailsLogo);
-        sublogo.setImageResource(Integer.parseInt(subArr[5]));
-        //DAYS LEFT
-        String daysleft = "" + subArr[6];
-        TextView tv_daysleft = findViewById(R.id.daysleft);
-        tv_daysleft.setText(daysleft);
-        //NO OF MEMBERS
-        String noofmembers = subArr[1];
-        TextView tv_noofmembers = findViewById(R.id.noofmembers);
-        tv_noofmembers.setText(noofmembers);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        CollapsingToolbarLayout toolBarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        toolBarLayout.setTitle(SubscriptionType);
-        //ADD USER Functionality
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_member);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                        addMyMember(members, subArr);
-
-
-                LinearLayout scr = findViewById(R.id.presentmembers);
-                LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
-                View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
-                scr.addView(inflatedLayout1);
-
-
-            }
-
-        });
-
-
-        for(int i = 0; i < members.length; i++){
-            LinearLayout scr = findViewById(R.id.presentmembers);
-            LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
-            View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
-            TextView subName = (TextView)inflatedLayout1.findViewById(R.id.memberThingy);
-            subName.setText(members[i]);
-            TextView memshare = (TextView)inflatedLayout1.findViewById(R.id.membershare);
-            String share = ""+ (Integer.parseInt(subArr[2])/members.length);
-            memshare.setText("₹"+share);
-            scr.addView(inflatedLayout1);
-        }
-
-    }
-
-
-
-
-public void addMyMember(String[] members, String[] subArr){
-
-    LinearLayout scr = findViewById(R.id.presentmembers);
-    LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
-    View inflatedLayout1 = inflater.inflate(R.layout.entering_members, null, false);
-    EditText name=inflatedLayout1.findViewById(R.id.enterName);
-    Button addMem=inflatedLayout1.findViewById(R.id.addMem);
-    addMem.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            String memName=name.getText().toString();
-            View inflatedLayout2 = inflater.inflate(R.layout.member_entry, null, false);
-            TextView myName=inflatedLayout2.findViewById(R.id.memberThingy);
-            myName.setText(memName);
-            List<String> memList = new ArrayList();
-            Collections.addAll(memList, members);
-            memList.add(memName);
-            String[] updatedMembers = memList.toArray(new String[0]);
-
-            AsyncTask.execute(new Runnable() {
-                @Override
-                public void run() {
-                    // Insert Data
-                    SubscriptionDatabase.getInstance(getApplicationContext()).subscriptionDao().insertUser(new SubscriptionGroup(subArr[8], memName));
-
-                }
-            });
-
-            AsyncTask.execute(new Runnable(){
-                @Override
-                public void run(){
-                    List<String> x = SubscriptionDatabase.getInstance(getApplicationContext()).subscriptionDao().getSubUsers(subArr[8]);
-                    for(int y = 0; y<x.size(); y++){
-                        System.out.println(x.get(y));
-                    }
-                }
-            });
-            scr.removeAllViewsInLayout();
-            refreshScreen(updatedMembers, subArr);
-        }
-    });
-    scr.addView(inflatedLayout1);
-}
-
-public void refreshScreen(String[] members, String[] subArr){
-for(int i = 0; i < members.length; i++){
-        LinearLayout scr = findViewById(R.id.presentmembers);
-        LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
-        View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
-        TextView subName = (TextView)inflatedLayout1.findViewById(R.id.memberThingy);
-        subName.setText(members[i]);
-        TextView memshare = (TextView)inflatedLayout1.findViewById(R.id.membershare);
-        String share = ""+ (Integer.parseInt(subArr[2])/members.length);
-        memshare.setText("₹"+share);
-        scr.addView(inflatedLayout1);
-    }
-}
-
-    @SuppressLint("ResourceAsColor")
-    public void showCustomDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Get the layout inflater
-        LayoutInflater inflater = this.getLayoutInflater();
-
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        builder.setView(inflater.inflate(R.layout.add_members_dialog, null))
-                // Add action buttons
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        LinearLayout scr = findViewById(R.id.presentmembers);
-                        LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
-                        View inflatedLayout1 = inflater.inflate(R.layout.member_entry, null, false);
-                        scr.addView(inflatedLayout1);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-        builder.setTitle("Add Member");
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-        //Switch sharetype = alertDialog.findViewById(R.id.sharetype);
-        /*
-        final TextView sharelabel = alertDialog.findViewById(R.id.EnterAmt_control);
-       final EditText shareAmt = alertDialog.findViewById(R.id.shareAmt);
-       sharetype.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                    shareAmt.setVisibility(View.VISIBLE);
-                    sharelabel.setVisibility(View.VISIBLE);
-                } else {
-                    // The toggle is disabled
-                    shareAmt.setVisibility(View.GONE);
-                    sharelabel.setVisibility(View.GONE);
-                }
-            }
-        });
-
-         */
     }
 }

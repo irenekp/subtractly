@@ -14,8 +14,8 @@
 
     <ImageView
         android:id="@+id/imgicon"
-        android:layout_width="94dp"
-        android:layout_height="84dp"
+        android:layout_width="wrap_content"
+        android:layout_height="95dp"
         android:contentDescription="@string/nav_header_desc"
         android:padding="5dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -26,12 +26,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Subscription Tracker"
+        android:text="subtractly"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/textPlan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="support: subtrack@gmail.com" />
+        android:text="support: subtractly@gmail.com" />
 </LinearLayout>

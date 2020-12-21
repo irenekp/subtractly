@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.mainpage_subapp.R;
+import com.example.mainpage_subapp.firebasedata.SubscriptionFB;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
@@ -36,6 +37,11 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +54,62 @@ public class AnalyticsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_analytics, container, false);
+
+        //DATABASE RELATED
+        /*
+        Quick notes:
+        1) All subscriptions are now created with a "you" member automatically.
+        2) To find this viewmember - access the subscription.members as a List<MembersFB> and iterate over it.
+        3) Unfortunately, the price per subscription is still not an actual attribute and is derived from the number of members and subscription price
+           I'll get around to fixing this soon, sorry
+        4)
+         */
+         //will be used to calculate logged in users final expenditure
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("subscriptions");
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    SubscriptionFB subscription = ds.getValue(SubscriptionFB.class);
+                    //data in subscription can be accessed as seen below:
+                    System.out.println(subscription.name + ", " + subscription.plan); //etc
+
+                    //creating a list of members that you can access
+                    List<String> membernames = new ArrayList<String>();
+                    for (int i = 0; i < ds.child("members").getChildrenCount(); i++) {
+                        if (subscription.members != null) {
+                            membernames.add(subscription.members.get(i).member_name);
+                        }
+                    }
+
+                    //total price of this subscription
+                    int priceOfSub = subscription.price;
+
+                    //each members share can be calculated by dividing by total number of members
+                    int pricePerMember = priceOfSub/membernames.size();
+
+                    int totalSpent = 0;
+                    //now, you can calculate total cash used by "you" member like so:
+                    for(int x = 0; x<membernames.size(); x++){
+                        if(membernames.get(x).equals("You")){
+                            totalSpent += pricePerMember;
+                        }
+                    }
+
+                    System.out.println(totalSpent);
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
         return root;
     }
 
