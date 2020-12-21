@@ -43,14 +43,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AnalyticsFragment extends Fragment {
 
     private AnalyticsViewModel analyticsViewModel;
-
+    List<String>subs;
+    List<Integer>no_mems;
+    List<String>memNames;
+    List<Integer>money;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_analytics, container, false);
@@ -59,7 +70,7 @@ public class AnalyticsFragment extends Fragment {
         /*
         Quick notes:
         1) All subscriptions are now created with a "you" member automatically.
-        2) To find this viewmember - access the subscription.members as a List<MembersFB> and iterate over it.
+        2) To find this view member - access the subscription.members as a List<MembersFB> and iterate over it.
         3) Unfortunately, the price per subscription is still not an actual attribute and is derived from the number of members and subscription price
            I'll get around to fixing this soon, sorry
         4)
@@ -71,11 +82,18 @@ public class AnalyticsFragment extends Fragment {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                subs=new ArrayList<>();
+                no_mems=new ArrayList<>();
+                memNames=new ArrayList<>();
+                money= Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0);
+                int end_Graph=Calendar.getInstance().get(Calendar.MONTH);
+                int cur_year=Calendar.getInstance().get(Calendar.YEAR);
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     SubscriptionFB subscription = ds.getValue(SubscriptionFB.class);
                     //data in subscription can be accessed as seen below:
-                    System.out.println(subscription.name + ", " + subscription.plan); //etc
-
+                    //System.out.println(subscription.name + ", " + subscription.plan); //etc
+                    subs.add(subscription.service_type);
+                    String startDate = subscription.start_date;
                     //creating a list of members that you can access
                     List<String> membernames = new ArrayList<String>();
                     for (int i = 0; i < ds.child("members").getChildrenCount(); i++) {
@@ -83,25 +101,61 @@ public class AnalyticsFragment extends Fragment {
                             membernames.add(subscription.members.get(i).member_name);
                         }
                     }
-
                     //total price of this subscription
                     int priceOfSub = subscription.price;
 
                     //each members share can be calculated by dividing by total number of members
                     int pricePerMember = priceOfSub/membernames.size();
-
+                    try {
+                        //Setting the date to the given date
+                        Calendar c = Calendar.getInstance();
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        c.setTime(sdf.parse(startDate));
+                        int startMonth=0;
+                        if(c.get(Calendar.YEAR)==cur_year){
+                            startMonth=c.get(Calendar.MONTH);
+                        }
+                        for(int mth=startMonth;mth<=end_Graph;mth++){
+                            money.set(mth,money.get(mth)+pricePerMember);
+                        }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     int totalSpent = 0;
                     //now, you can calculate total cash used by "you" member like so:
                     for(int x = 0; x<membernames.size(); x++){
+                        memNames.add(membernames.get(x));
                         if(membernames.get(x).equals("You")){
                             totalSpent += pricePerMember;
                         }
                     }
-
-                    System.out.println(totalSpent);
-
-
+                    no_mems.add(membernames.size());
+                    //System.out.println(membernames.size()+"|");
+                    //System.out.println(totalSpent);
                 }
+                System.out.println("subs:"+ subs.toString());
+                System.out.println("no_mems:"+ no_mems.toString());
+                System.out.println("memNames:"+ memNames.toString());
+                PieChart categoryChart =(PieChart)getActivity().findViewById(R.id.genrechart);
+                List<String>names=new ArrayList<>();
+                List<Integer>values=new ArrayList<>();
+                Set<String> distinct = new HashSet<>(subs);
+                for (String s: distinct) {
+                    names.add(s);
+                    values.add(Collections.frequency(names, s));
+                }
+                initPieChart(categoryChart,"Usage by Category",names,values);
+                names=new ArrayList<>();
+                values=new ArrayList<>();
+                distinct = new HashSet<>(memNames);
+                for (String s: distinct) {
+                    names.add(s);
+                    values.add(Collections.frequency(names, s));
+                }
+                PieChart colabChart=(PieChart)getActivity().findViewById(R.id.colabchart);
+                initPieChart(colabChart,"% Shared with Friends",names,values);
+                LineChart costChart=(LineChart)getActivity().findViewById(R.id.costchart);
+                initLineChart(costChart,money);
             }
 
             @Override
@@ -116,14 +170,8 @@ public class AnalyticsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        PieChart categoryChart =(PieChart)getActivity().findViewById(R.id.genrechart);
-        initPieChart(categoryChart,"Usage by Category",0);
-        PieChart colabChart=(PieChart)getActivity().findViewById(R.id.colabchart);
-        initPieChart(colabChart,"% Shared with Friends",0);
-        LineChart costChart=(LineChart)getActivity().findViewById(R.id.costchart);
-        initLineChart(costChart);
     }
-    private void initLineChart(LineChart chart){
+    private void initLineChart(LineChart chart, List<Integer>money){
         final HashMap<Integer,String> Months = new HashMap<Integer, String>();
         Months.put(0,"Jan");
         Months.put(1,"Feb");
@@ -140,7 +188,7 @@ public class AnalyticsFragment extends Fragment {
         List<Entry> entries = new ArrayList<Entry>();
         for (int i=0;i<12;i++) {
             // turn your data into Entry objects
-            entries.add(new Entry(i,(i+1)*(i+1)));
+            entries.add(new Entry(i,money.get(i)));
         }
         LineDataSet dataSet = new LineDataSet(entries, "Costs"); // add entries to dataset
         dataSet.setLineWidth(2f);
@@ -183,7 +231,7 @@ public class AnalyticsFragment extends Fragment {
         chart.setData(lineData);
         chart.invalidate();
     }
-    private void initPieChart(PieChart chart, String title, int chartdata){
+    private void initPieChart(PieChart chart, String title,List<String>names,List<Integer>values){
         ////////////////////
         chart.setUsePercentValues(true);
         chart.getDescription().setEnabled(false);
@@ -246,12 +294,11 @@ public class AnalyticsFragment extends Fragment {
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
         // the chart.
-        for (; chartdata < 6; chartdata++) {
-            entries.add(new PieEntry(chartdata+1,
-                    "Text"+chartdata));
+        for (int i=0;i<values.size(); i++) {
+            entries.add(new PieEntry(values.get(i),names.get(i)));
         }
 
-        PieDataSet dataSet = new PieDataSet(entries,"Categories");
+        PieDataSet dataSet = new PieDataSet(entries,"");
         dataSet.setDrawIcons(false);
         dataSet.setSliceSpace(3f);
         dataSet.setIconsOffset(new MPPointF(0, 40));

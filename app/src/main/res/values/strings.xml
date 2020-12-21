@@ -10,7 +10,6 @@
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
     <string name="title_activity_subscription_details">Netflix</string>
-
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -36,5 +35,12 @@
         <item>30 days</item>
         <item>90 days</item>
         <item>1 year</item>
+    </string-array>
+    <string-array name="ServiceType">
+        <item>Video</item>
+        <item>Music</item>
+        <item>News</item>
+        <item>Books</item>
+        <item>Other</item>
     </string-array>
 </resources>

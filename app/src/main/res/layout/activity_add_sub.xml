@@ -35,16 +35,17 @@
 
     <EditText
         android:id="@+id/StartDate"
-        android:layout_width="160dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="232dp"
-        android:layout_marginTop="212dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="202dp"
         android:clickable="true"
         android:editable="false"
         android:ems="10"
         android:focusable="false"
         android:inputType="textPersonName"
         android:text="Date"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -54,6 +55,7 @@
         android:layout_height="55dp"
         android:layout_marginStart="364dp"
         android:layout_marginTop="480dp"
+        android:background="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_circle_outline_24" />
@@ -62,8 +64,8 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="316dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="328dp"
         android:text="Billing Cycle"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +76,7 @@
         android:layout_width="295dp"
         android:layout_height="22dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="344dp"
+        android:layout_marginTop="352dp"
         android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -116,8 +118,8 @@
         android:id="@+id/planType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="256dp"
-        android:layout_marginTop="272dp"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="288dp"
         android:entries="@array/SubscriptionTypes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -149,8 +151,8 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="276dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="288dp"
         android:text="Plan Type"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -171,7 +173,7 @@
         android:id="@+id/textView2"
         android:layout_width="83dp"
         android:layout_height="20dp"
-        android:layout_marginStart="52dp"
+        android:layout_marginStart="48dp"
         android:layout_marginTop="212dp"
         android:hint="Start Date"
         android:text="Start Date"
@@ -181,10 +183,10 @@
 
     <EditText
         android:id="@+id/subname"
-        android:layout_width="178dp"
-        android:layout_height="37dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginStart="212dp"
-        android:layout_marginTop="168dp"
+        android:layout_marginTop="165dp"
         android:ems="10"
         android:hint="Eg: Netflix, Spotify"
         android:inputType="textPersonName"
@@ -215,12 +217,33 @@
         android:id="@+id/subPriceText"
         android:layout_width="84dp"
         android:layout_height="41dp"
-        android:layout_marginStart="304dp"
-        android:layout_marginTop="392dp"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="384dp"
         android:ems="10"
         android:inputType="number"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="250dp"
+        android:text="Service Type"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/ServiceType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="212dp"
+        android:layout_marginTop="248dp"
+        android:entries="@array/ServiceType"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

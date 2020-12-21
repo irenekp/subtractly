@@ -37,6 +37,8 @@ public class SubscriptionFB {
 
     public int icon;
 
+    public String service_type;
+
     public String start_date;
 
     public List<MembersFB> members;
@@ -45,7 +47,7 @@ public class SubscriptionFB {
 
     }
 
-    public SubscriptionFB(String id, String name, String plan, int price, int shared, int billing_cycle, int icon, String start_date, List<MembersFB> members) {
+    public SubscriptionFB(String id, String name, String plan, int price, int shared, int billing_cycle, int icon, String start_date, List<MembersFB> members, String service_type) {
         this.id = id;
         this.name = name;
         this.plan = plan;
@@ -55,12 +57,13 @@ public class SubscriptionFB {
         this.icon = icon;
         this.start_date = start_date;
         this.members = members;
+        this.service_type=service_type;
     }
 
 
-        public void insertSubscription(String subId, String name, String plan, int price, int shared, int billing_cycle, int icon, String start_date, List<MembersFB> members) {
+        public void insertSubscription(String subId, String name, String plan, int price, int shared, int billing_cycle, int icon, String start_date, List<MembersFB> members, String service_type) {
             DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-            SubscriptionFB subToInsert = new SubscriptionFB(subId, name, plan, price, shared, billing_cycle, icon, start_date, members);
+            SubscriptionFB subToInsert = new SubscriptionFB(subId, name, plan, price, shared, billing_cycle, icon, start_date, members,service_type);
             database.child("subscriptions").child(subId).setValue(subToInsert);
         }
 
@@ -69,7 +72,7 @@ public class SubscriptionFB {
             database.child(SubId).removeValue();
         }
 
-        public void populateDB(){
+        /**public void populateDB(){
             SubscriptionFB obj = new SubscriptionFB();
 
             //initialising members lists for each subscription separately to begin with - just the first time to populate the db
@@ -105,7 +108,7 @@ public class SubscriptionFB {
             obj.insertSubscription("NetInd30", "Netflix", "Individual", 129, 1, 30, R.drawable.netflix, "17/12/2020", netind30);
             obj.insertSubscription("SpotFam30", "Spotify", "Family", 199, 4, 30, R.drawable.spotify, "7/12/2020", spotfam30);
 
-        }
+        }**/
 }
 
 
