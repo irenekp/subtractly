@@ -141,6 +141,9 @@ public class addSubActivity extends AppCompatActivity {
                     memDate.setError("Date is a required field!");
                 }
                 else {
+                    Spinner serviceType = (Spinner) findViewById(R.id.ServiceType);
+                    String service_type=serviceType.getSelectedItem().toString();
+
                     price = Integer.parseInt(memprice.getText().toString());
                     date = memDate.getText().toString();
                     name = subname.getText().toString();
@@ -149,7 +152,7 @@ public class addSubActivity extends AppCompatActivity {
                     int shared = membersToAdd.size();
                     String id = name.substring(0, 4) + plan.substring(0, 4) + price;
                     SubscriptionFB toAdd = new SubscriptionFB();
-                    toAdd.insertSubscription(id, name, plan, price, shared, cyclePlan, R.drawable.ic_launcher, date, membersToAdd);
+                    toAdd.insertSubscription(id, name, plan, price, shared, cyclePlan, R.drawable.ic_launcher, date, membersToAdd, service_type);
                     Intent i;
                     i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
