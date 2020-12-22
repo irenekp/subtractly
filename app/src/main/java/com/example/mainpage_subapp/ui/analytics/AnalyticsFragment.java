@@ -187,46 +187,23 @@ public class AnalyticsFragment extends Fragment {
         Months.put(11,"Dec");
         List<Entry> entries = new ArrayList<Entry>();
         for (int i=0;i<12;i++) {
-            // turn your data into Entry objects
             entries.add(new Entry(i,money.get(i)));
         }
         LineDataSet dataSet = new LineDataSet(entries, "Costs"); // add entries to dataset
         dataSet.setLineWidth(2f);
         dataSet.setColor(R.color.colorPrimary);
-
-        //to make the smooth line as the graph is adrapt change so smooth curve
         dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-        //to enable the cubic density : if 1 then it will be sharp curve
         dataSet.setCubicIntensity(0.2f);
-        //to fill the below of smooth line in graph
         dataSet.setDrawFilled(true);
         dataSet.setFillColor(R.color.colorPrimary);
-        //set the transparency
         dataSet.setFillAlpha(80);
-        //set the gradiant then the above draw fill color will be replace
-        //Drawable drawable = ContextCompat.getDrawable(getContext();
-        //dataSet.setFillDrawable(drawable);
-        //set legend disable or enable to hide {the left down corner name of graph}
         Legend legend = chart.getLegend();
         legend.setEnabled(false);
-        //dataSet.setDrawCircles(false);
         LineData lineData = new LineData(dataSet);
         XAxis xAxis = chart.getXAxis();
-        /**xAxis.setValueFormatter(new IAxisValueFormatter(){
-         public String getFormattedValue(float value, AxisBase axis) {
-         if (value >= 0) {
-         if (value <= Months.size() - 1) {
-         return Months.get((int) value);
-         }
-         return "";
-         }
-         return "";
-         }
-         });**/
         String [] months={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"};
         xAxis.setValueFormatter(new IndexAxisValueFormatter(months));
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        //xAxis.setLabelCount(12);
         chart.getDescription().setEnabled(false);
         chart.setData(lineData);
         chart.invalidate();

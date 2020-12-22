@@ -194,7 +194,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/addSubLogo"
         android:layout_width="110dp"
         android:layout_height="125dp"
         android:layout_marginStart="150dp"

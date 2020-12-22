@@ -8,12 +8,15 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.example.mainpage_subapp.ui.login.LoginActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,6 +48,10 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        ImageView iv=findViewById(R.id.signupLogo);
+        DrawableImageViewTarget imageViewTarget = new DrawableImageViewTarget(iv);
+        Glide.with(this).load(R.raw.logo).into(imageViewTarget);
+        iv.setScaleType(ImageView.ScaleType.CENTER);
         msg = findViewById(R.id.signup_text);
         email = findViewById(R.id.signup_email);
         password = findViewById(R.id.signup_password);

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,6 +20,8 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.example.mainpage_subapp.MainActivity;
 import com.example.mainpage_subapp.R;
 import com.example.mainpage_subapp.firebasedata.MembersFB;
@@ -42,7 +45,10 @@ public class addSubActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_sub);
-
+        ImageView iv=findViewById(R.id.addSubLogo);
+        DrawableImageViewTarget imageViewTarget = new DrawableImageViewTarget(iv);
+        Glide.with(this).load(R.raw.logo).into(imageViewTarget);
+        iv.setScaleType(ImageView.ScaleType.CENTER);
         EditText edittext = (EditText) findViewById(R.id.StartDate);
 
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {

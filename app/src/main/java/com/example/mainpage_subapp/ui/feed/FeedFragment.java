@@ -1,11 +1,15 @@
 package com.example.mainpage_subapp.ui.feed;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +25,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.example.mainpage_subapp.R;
 
 import org.json.JSONArray;
@@ -53,8 +59,29 @@ public class FeedFragment extends Fragment {
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
             //your codes here
-            AsyncGetFeed data=new AsyncGetFeed();
-            data.execute();
+            boolean connected = false;
+            ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+                //we are connected to a network
+                connected = true;
+            }
+            else
+                connected = false;
+            if(connected)
+            {
+                AsyncGetFeed data=new AsyncGetFeed();
+                data.execute();
+            }
+            else{
+                LinearLayout ly=getActivity().findViewById(R.id.feed_view);
+                ImageView iv = new ImageView(getActivity());
+                DrawableImageViewTarget imageViewTarget = new DrawableImageViewTarget(iv);
+                Glide.with(getActivity()).load(R.raw.no_internet).into(imageViewTarget);
+                //iv.setScaleType(ImageView.ScaleType.CENTER);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                ly.addView(iv,params);
+            }
         }
     }
     public class AsyncGetFeed extends AsyncTask<Void,View,Void> {
@@ -105,6 +132,7 @@ public class FeedFragment extends Fragment {
                     jsonData = responses.body().string();
                     Jobject = new JSONObject(jsonData);
                     Jarray = Jobject.getJSONArray("articles");
+                    //get individual articles data
                     for (int j = 0; j < Jarray.length(); j++) {
                         final JSONObject object = Jarray.getJSONObject(j);
                         JSONObject src = object.getJSONObject("source");

@@ -27,6 +27,6 @@
     <fragment
         android:id="@+id/nav_date"
         android:name="com.example.mainpage_subapp.ui.dates.DateFragment"
-        android:label="Date"
+        android:label="Upcoming"
         tools:layout="@layout/fragment_date" />
 </navigation>
