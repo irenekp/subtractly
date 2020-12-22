@@ -142,15 +142,18 @@ public class AnalyticsFragment extends Fragment {
                 Set<String> distinct = new HashSet<>(subs);
                 for (String s: distinct) {
                     names.add(s);
-                    values.add(Collections.frequency(names, s));
+                    values.add(Collections.frequency(subs, s));
                 }
                 initPieChart(categoryChart,"Usage by Category",names,values);
                 names=new ArrayList<>();
                 values=new ArrayList<>();
                 distinct = new HashSet<>(memNames);
                 for (String s: distinct) {
-                    names.add(s);
-                    values.add(Collections.frequency(names, s));
+                    if(!s.contains("You"))
+                    {
+                        names.add(s);
+                        values.add(Collections.frequency(memNames, s));
+                    }
                 }
                 PieChart colabChart=(PieChart)getActivity().findViewById(R.id.colabchart);
                 initPieChart(colabChart,"% Shared with Friends",names,values);
