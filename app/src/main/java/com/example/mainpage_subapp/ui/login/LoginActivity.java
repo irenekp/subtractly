@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.example.mainpage_subapp.MainActivity;
 import com.example.mainpage_subapp.R;
 import com.example.mainpage_subapp.SignUp;
@@ -63,6 +66,11 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ImageView iv=findViewById(R.id.loginLogo);
+        DrawableImageViewTarget imageViewTarget = new DrawableImageViewTarget(iv);
+        Glide.with(this).load(R.raw.logo).into(imageViewTarget);
+        iv.setScaleType(ImageView.ScaleType.CENTER);
+
         usernameEditText = findViewById(R.id.username);
         passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);

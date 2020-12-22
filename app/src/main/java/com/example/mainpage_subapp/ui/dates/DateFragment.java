@@ -81,13 +81,18 @@ public class DateFragment extends Fragment {
                     month = c.get(Calendar.MONTH);
                     year = c.get(Calendar.YEAR);
                     System.out.println(subscription.name + ", " + day + ", " + month + ", " + year);
-
                     calendar.set(year, month, day);
                     events.add(new EventDay(calendar, getResources().getDrawable(subscription.icon)));
                     calendars.add(calendar);
-
+                    //+next 5 pay dates
+                    for(int i=1;i<6;i++){
+                        Calendar x=Calendar.getInstance();
+                        x.set(year,month,day);
+                        x.add(Calendar.DAY_OF_MONTH,i*subscription.billing_cycle);
+                        events.add(new EventDay(x, getResources().getDrawable(subscription.icon)));
+                        calendars.add(x);
+                    }
                     /////////
-
                     CalendarView calendarView = getActivity().findViewById(R.id.calendarView);
                     calendars.add(calendar);
                     calendarView.setHighlightedDays(calendars);

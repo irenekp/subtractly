@@ -1,5 +1,6 @@
 package com.example.mainpage_subapp.ui.home;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,11 +9,15 @@ import com.example.mainpage_subapp.firebasedata.MembersFB;
 import com.example.mainpage_subapp.firebasedata.SubscriptionFB;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,6 +25,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mainpage_subapp.R;
 
@@ -48,38 +54,28 @@ public class SubscriptionDetails extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         String subArr = getIntent().getStringExtra("subArr");
         String sdaysleft = getIntent().getStringExtra("sdaysleft");
         //String[] members = getIntent().getStringArrayExtra("subMembers");
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("subscriptions");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscription_details);
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 {
                     SubscriptionFB subscription = dataSnapshot.child(subArr).getValue(SubscriptionFB.class);
-
                     TextView tv_category = findViewById(R.id.category);
                     tv_category.setText(subscription.plan);
-
                     TextView tv_plan_price = findViewById(R.id.plan_price);
                     tv_plan_price.setText("₹" + subscription.price);
-
                     TextView tv_billingcycle = findViewById(R.id.billingcycle);
                     tv_billingcycle.setText(subscription.billing_cycle + " day billing cycle");
-
                     ImageView sublogo = (ImageView) findViewById(R.id.detailsLogo);
                     sublogo.setImageResource(subscription.icon);
-
                     TextView tv_daysleft = findViewById(R.id.daysleft);
                     tv_daysleft.setText(sdaysleft);
-
                     //DUE DATE
                     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                     Calendar c = Calendar.getInstance();
@@ -96,18 +92,30 @@ public class SubscriptionDetails extends AppCompatActivity {
                     String endDate = sdf.format(c.getTime());
                     TextView tv_duedate = findViewById(R.id.duedate);
                     tv_duedate.setText("Due: " + endDate);
-
                     //delete subscription
-                    TextView deleteSub = findViewById(R.id.deleteSub);
+                    Button deleteSub = findViewById(R.id.deleteSub);
                     deleteSub.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            subscription.deleteSubscription(subscription, subArr);
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                            builder.setMessage("Confirm Subscription Deletion?")
+                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            subscription.deleteSubscription(subscription, subArr);
+                                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                            startActivity(intent);
+                                        }
+                                    })
+                                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            // User cancelled the dialog
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            // Create the AlertDialog object and return it
+                            builder.show();
                         }
                     });
-
                 }
             }
 
@@ -117,32 +125,23 @@ public class SubscriptionDetails extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });
-
-
         //DISPLAYING ALL MEMBERS VIA FIREBASE
         DatabaseReference memberRef = database.getReference("subscriptions");
         memberRef.keepSynced(true);
-
         memberRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                 List<String> membernames = new ArrayList<String>();
                 for (DataSnapshot ds : snapshot.getChildren()) {
                     SubscriptionFB subscriptionFB = ds.getValue(SubscriptionFB.class);
-
                     //waiting for db ref to reach the right id
                     if (subArr.equals(subscriptionFB.id)) {
-
                         int share = subscriptionFB.price;
-
                         //defining the places we'll be saving these guys in
                         LinearLayout scr = findViewById(R.id.presentmembers);
                         LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
                         View inflatedLayout1 = inflater.inflate(R.layout.entering_members, null, false);
                         EditText name = inflatedLayout1.findViewById(R.id.enterName);
-
-
                         //first, creating a list of all membernames
                         for (int i = 0; i < ds.child("members").getChildrenCount(); i++) {
                             if (subscriptionFB.members != null) {
@@ -153,25 +152,21 @@ public class SubscriptionDetails extends AppCompatActivity {
                         for (int x = 0; x < membernames.size(); x++) {
                             LayoutInflater inflater1 = LayoutInflater.from(SubscriptionDetails.this);
                             View inflatedLayout2 = inflater1.inflate(R.layout.member_entry, null, false);
-
                             TextView subName = (TextView) inflatedLayout2.findViewById(R.id.memberThingy);
                             TextView memshare = (TextView) inflatedLayout2.findViewById(R.id.membershare);
                             int mems = share / membernames.size();
                             String memberShare = Integer.toString(mems);
                             memshare.setText("₹" + memberShare);
                             subName.setText(membernames.get(x));
+                            //registerForContextMenu(inflatedLayout2);
                             scr.addView(inflatedLayout2);
                         }
-
                         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_member);
                         fab.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
                                 addMyMember();
-
                             }
-
                             private void addMyMember() {
                                 LinearLayout scr = findViewById(R.id.presentmembers);
                                 LayoutInflater inflater = LayoutInflater.from(SubscriptionDetails.this);
@@ -199,21 +194,31 @@ public class SubscriptionDetails extends AppCompatActivity {
                                 });
                                 scr.addView(inflatedLayout1);
                             }
-
                         });
-
                     }
-
                 }
             }
-
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println("Something went wrong!");
             }
         });
-
-
     }
+    /**
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu_delete_mem, menu);
+        menu.setHeaderTitle("Delete Member?");
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        // Call your function to preform for buttons pressed in a context menu
+        // can use item.getTitle() or similar to find out button pressed
+        // item.getItemID() will return the v.getID() that we passed before
+        View v=findViewById(item.getItemId());
+        ((ViewGroup) v.getParent()).removeView(v);
+        return true;
+    }**/
 }

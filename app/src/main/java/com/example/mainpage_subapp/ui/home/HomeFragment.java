@@ -16,9 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.example.mainpage_subapp.R;
 import com.example.mainpage_subapp.firebasedata.SubscriptionFB;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +44,6 @@ public class HomeFragment extends Fragment {
 
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         homeView = root.findViewById(R.id.home_view);
-
-
         return root;
     }
 
@@ -70,15 +71,10 @@ public class HomeFragment extends Fragment {
 
 
     public class AsyncGetSubs extends AsyncTask<Void, View, Void> {
-
-
         @Override
         protected Void doInBackground(Void... voids) {
-
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("subscriptions");
-                homeView.removeAllViewsInLayout();
-
                 myRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -86,10 +82,8 @@ public class HomeFragment extends Fragment {
                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
                             LayoutInflater li = LayoutInflater.from(getContext());
                             View cv = li.inflate(R.layout.cards_layout, null);
-
                             SubscriptionFB subscription = ds.getValue(SubscriptionFB.class);
                             String subId = subscription.id;
-
                             TextView name = (TextView) cv.findViewById(R.id.textViewName);
                             name.setText(subscription.name);
 
@@ -153,22 +147,17 @@ public class HomeFragment extends Fragment {
                         }
 
                     }
-
                     @Override
                     public void onCancelled(DatabaseError error) {
                         // Failed to read value
                         Log.w(TAG, "Failed to read value.", error.toException());
                     }
                 });
-
             return null;
         }
-
         @Override
         protected void onProgressUpdate(View... v) {
             homeView.addView(v[0]);
         }
-
-
     }
 }
