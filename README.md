@@ -1,5 +1,5 @@
 # subtractly  
-your one-stop subscriptions tracker  
+your one-stop android subscriptions tracker 
 
 Dated: Sept 2020.
 
