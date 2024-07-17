@@ -13,7 +13,7 @@ It provides a simplified interface for your upcoming payment-share deadlines.
 You can also see latest news and subscribe to trends related to your subscription platforms.  
 Additionally, it provides personalized insights on your spending and content consumption.  
 
-## SELECT SCREENSHOTS  
+## SELECT APP SCREENSHOTS  
 with implementation summary
 
 ### Sign Up
@@ -30,4 +30,22 @@ with implementation summary
 
 ### Usage Analytics
 <img width="689" alt="Screenshot 2024-07-12 at 12 44 38 PM" src="https://github.com/user-attachments/assets/14067dbb-0dab-4e19-933b-0a8d20761ad9">
+
+
+## APP SEQUENCE DETAILS  
+
+<img width="856" alt="Screenshot 2024-07-17 at 10 38 56 PM" src="https://github.com/user-attachments/assets/fe446eb9-bf05-4d7b-9ef3-6f91be8e2c97">
+
+<img width="757" alt="Screenshot 2024-07-17 at 10 38 05 PM" src="https://github.com/user-attachments/assets/eeea0cc5-5354-45a6-a3d9-966c8d485265">
+
+<img width="845" alt="Screenshot 2024-07-17 at 10 39 30 PM" src="https://github.com/user-attachments/assets/3cf9ffe4-d0f6-4d4a-971c-5d9df6151b78">
+
+<img width="817" alt="Screenshot 2024-07-17 at 10 39 52 PM" src="https://github.com/user-attachments/assets/4f960017-a9da-41cd-a625-40dfe22ee3fc">
+
+<img width="761" alt="Screenshot 2024-07-17 at 10 40 24 PM" src="https://github.com/user-attachments/assets/64b2512e-462b-42e0-b39e-8102bce4b689">
+
+
+
+
+
 
